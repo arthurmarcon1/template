@@ -1,0 +1,268 @@
+/* ==========================================================================
+   ResinArt / Uilian Machado - Design Tokens
+   Direcao estetica: "esmalte e dentina"
+   Dials (taste-skill Secao 1): DESIGN_VARIANCE 7 / MOTION_INTENSITY 6 / VISUAL_DENSITY 4
+
+   DEMO ESPECULATIVO. Valores de marca reais (preco, datas, carga horaria)
+   nao aparecem aqui. Placeholders de conteudo usam a marcacao [ ].
+
+   Uso: CSS custom properties puras, funcionam em qualquer stack.
+   Para promover a Tailwind v4, troque ":root {" por "@theme {" e o build
+   passa a gerar utilities (bg-enamel-50, text-dentin-700, etc).
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------
+     1. COR  -  TEMA ESCURO TRAVADO
+
+     A pagina agora e escura, ponto. Nao ha variante clara e nao ha
+     media query de esquema de cor: a Secao 4.11 permite um design que
+     se compromete deliberadamente com um unico visual, e a paleta
+     abaixo foi especificada assim.
+
+     Contraste recalculado do zero, porque a inversao muda tudo.
+     Todos os pares em uso passam AA. Numeros na proposta.
+     ------------------------------------------------------------------ */
+
+  /* Fundo */
+  --c-bg:        #0A0A0B;  /* quase preto */
+  --c-bg-raised: #141416;  /* superficie elevada */
+
+  /* Texto */
+  --c-text:       #F5F3EF;  /* 17.9:1 sobre o fundo, passa AAA */
+  --c-text-muted: #8A8A8F;  /* 5.8:1 sobre o fundo, passa AA */
+
+  /* Reguas. Hairline no escuro precisa ser sutil: no fundo quase preto
+     uma linha clara vira grade de tabela, que e exatamente o efeito a
+     evitar na faixa de numeros. */
+  --c-rule:        #26262A;
+  --c-rule-strong: #3A3A40;
+
+  /* Acento unico. Ambar mantido, agora um pouco mais claro para
+     sobreviver ao fundo escuro. 6.6:1 sobre o fundo, passa AA em corpo. */
+  --c-accent:       #C08B4A;
+  --c-accent-hover: #D3A063;
+
+  /* No escuro o ambar ja passa AA como texto, entao nao existe mais a
+     distincao entre "ambar de fundo" e "ambar de texto" que o tema
+     claro exigia. Um so token serve aos dois usos. */
+  --c-accent-text: var(--c-accent);
+
+  /* Botao primario: solido claro com texto escuro. 17.9:1.
+     Botao secundario nao tem caixa, so texto. */
+  --c-btn-primary-bg:    var(--c-text);
+  --c-btn-primary-text:  var(--c-bg);
+  --c-btn-primary-hover: #FFFFFF;
+
+  /* Foco visivel. Ambar sobre fundo escuro, com halo do proprio fundo. */
+  --c-focus: var(--c-accent);
+  --focus-ring: 0 0 0 2px var(--c-bg), 0 0 0 4px var(--c-focus);
+
+  /* ------------------------------------------------------------------
+     2. TIPOGRAFIA
+     Par A TRAVADO: Bodoni Moda + Archivo + Geist Mono.
+     As familias sao carregadas por next/font em src/app/layout.tsx, que
+     injeta --font-bodoni, --font-archivo e --font-geist-mono.
+     Sem <link> para o Google Fonts em producao (Secao 3.A).
+
+     Serifada justificada pelo override da Secao 4.1: o brief nomeia a
+     categoria e ela carrega significado de marca. Fraunces e
+     Instrument Serif estao banidos pela skill e nao aparecem aqui.
+     ------------------------------------------------------------------ */
+
+  --font-display: var(--font-bodoni), 'Iowan Old Style', Georgia, serif;
+  --font-text:    var(--font-archivo), system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:    var(--font-geist-mono), ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Escala fluida. Display no teto de 4.5rem porque a headline do heroi
+     tem mais de 6 palavras (cap de font-scale da Secao 4.7). */
+  --fs-display-1: clamp(2.5rem, 6vw, 4.5rem);     /* heroi, max 2 linhas */
+  --fs-display-2: clamp(2rem, 4.5vw, 3.25rem);    /* headline de secao */
+  --fs-display-3: clamp(1.5rem, 3vw, 2rem);       /* subsecao */
+  --fs-body-lg:   1.125rem;                        /* subtexto do heroi */
+  --fs-body:      1rem;
+  --fs-body-sm:   0.9375rem;
+  --fs-label:     0.75rem;                         /* eyebrow. RACIONADO: ver nota abaixo */
+
+  --lh-display:        1.05;
+  --lh-display-italic: 1.12;  /* obrigatorio quando o italico tem descendente (y g j p q) */
+  --lh-body:           1.6;
+  --lh-tight:          1.3;
+
+  --tr-display: -0.02em;
+  --tr-body:     0em;
+  --tr-label:    0.18em;
+
+  --fw-display:      500;
+  --fw-display-bold: 700;
+  --fw-body:         400;
+  --fw-body-medium:  500;
+
+  /* EYEBROW: max 1 a cada 3 secoes (Secao 4.7, regra mecanica no pre-flight).
+     O token existe; o orcamento de uso nao esta no CSS, esta na composicao. */
+
+  /* Medida de leitura */
+  --measure:       65ch;
+  --measure-short: 45ch;
+
+  /* ------------------------------------------------------------------
+     3. ESPACAMENTO
+     Base 4px. Linear ate --sp-4, depois modular.
+     ------------------------------------------------------------------ */
+
+  --sp-1:  0.25rem;  /*   4px */
+  --sp-2:  0.5rem;   /*   8px */
+  --sp-3:  0.75rem;  /*  12px */
+  --sp-4:  1rem;     /*  16px */
+  --sp-5:  1.5rem;   /*  24px */
+  --sp-6:  2rem;     /*  32px */
+  --sp-7:  3rem;     /*  48px */
+  --sp-8:  4rem;     /*  64px */
+  --sp-9:  6rem;     /*  96px */
+  --sp-10: 8rem;     /* 128px */
+  --sp-11: 12rem;    /* 192px */
+
+  /* Ritmo de secao. VISUAL_DENSITY 4 = faixa "Daily App", 64px a 96px. */
+  --section-y:    clamp(4rem, 8vw, 6rem);
+  --section-y-lg: clamp(6rem, 10vw, 8rem);  /* usar 1 ou 2 vezes na pagina, nao sempre */
+
+  /* Teto de padding-top do heroi: 6rem no desktop (Secao 4.7, cap pt-24) */
+  --hero-pt: clamp(2rem, 5vw, 6rem);
+
+  /* ------------------------------------------------------------------
+     4. GRID E LAYOUT
+     DESIGN_VARIANCE 7 = faixa "Offset": sobreposicoes com margem negativa,
+     aspect ratios variados lado a lado, headers a esquerda.
+     NAO e masonry nem grid fracionado extremo (isso seria 8-10).
+     ------------------------------------------------------------------ */
+
+  --grid-max:    1400px;
+  --grid-cols:   12;
+  --grid-gutter: clamp(1rem, 2.5vw, 2rem);
+  --grid-margin: clamp(1rem, 5vw, 4rem);
+
+  /* Colunas assimetricas pre-aprovadas para VARIANCE 7 */
+  --split-7-5: 7fr 5fr;
+  --split-5-7: 5fr 7fr;
+  --split-8-4: 8fr 4fr;
+
+  /* Deslocamento de sobreposicao. Faixa "Offset", nao caos. */
+  --offset-sm: -2rem;
+  --offset-md: -3.5rem;
+
+  /* Breakpoints (Secao 3.E). Referencia para media queries. */
+  --bp-sm: 640px;
+  --bp-md: 768px;   /* abaixo disto TUDO colapsa para coluna unica estrita */
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+
+  /* Altura de nav: teto 80px, padrao 64-72px (Secao 4.7) */
+  --nav-h: 72px;
+
+  /* Estabilidade de viewport: sempre 100dvh, nunca 100vh */
+  --vh-full: 100dvh;
+
+  /* ------------------------------------------------------------------
+     5. FORMA
+     TRAVA DE FORMA (Secao 4.4): uma escala de raio para a pagina inteira.
+     Escolha: quase reto. Clinico, preciso. Sem pilulas, sem cards macios.
+     ------------------------------------------------------------------ */
+
+  /* TRAVA DE FORMA, versao com regra documentada (Secao 4.4 permite
+     sistema misto desde que a regra exista e seja seguida em todo lugar):
+
+       botoes e pilulas  -> --radius-pill
+       todo o resto      -> --radius
+
+     Nao ha terceiro valor. Card, input, imagem e moldura usam --radius. */
+  --radius:      2px;
+  --radius-pill: 9999px;
+  --radius-0:    0;
+
+  --rule-w:        1px;
+  --rule-w-strong: 2px;
+
+  /* Elevacao: hairline e o padrao. Sombra so quando a elevacao comunica
+     hierarquia real. Tingida no matiz frio do fundo, nunca preto puro. */
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 2px 4px rgba(0, 0, 0, 0.55), 0 8px 24px rgba(0, 0, 0, 0.45);
+
+  /* ------------------------------------------------------------------
+     6. MOVIMENTO
+     MOTION_INTENSITY 6 = faixa "Fluid CSS". transform e opacity apenas.
+     Sem window.addEventListener('scroll') (banimento duro da Secao 5.D).
+     Acima de 4, a regra "motion claimed, motion shown" vale: a pagina
+     precisa realmente se mover, nao so declarar que se move.
+     ------------------------------------------------------------------ */
+
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --dur-fast: 160ms;
+  --dur-base: 320ms;
+  --dur-slow: 640ms;
+  --stagger:   80ms;
+
+  /* Feedback tatil no :active (Secao 4.5) */
+  --press: translateY(1px);
+
+  --z-base: 0;
+  --z-sticky: 10;
+  --z-nav: 20;
+  --z-overlay: 30;
+}
+
+/* ==========================================================================
+   MOVIMENTO REDUZIDO - obrigatorio (Secao 6.B)
+   MOTION_INTENSITY 6 esta acima de 3, entao tudo precisa de wrapper.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 1ms;
+    --dur-base: 1ms;
+    --dur-slow: 1ms;
+    --stagger:  0ms;
+    --press:    none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   PRIMITIVAS - o minimo para os tokens serem verificaveis.
+   Nao sao componentes. Nenhuma secao foi construida.
+   ========================================================================== */
+
+.container {
+  width: 100%;
+  max-width: var(--grid-max);
+  margin-inline: auto;
+  padding-inline: var(--grid-margin);
+}
+
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
+  gap: var(--grid-gutter);
+}
+
+/* Colapso mobile explicito. Exigido por secao pela Secao 4.7. */
+@media (max-width: 767px) {
+  .grid-12 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+:where(a, button, input, textarea, select):focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius);
+}
