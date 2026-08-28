@@ -38,7 +38,7 @@ const geistMono = Geist_Mono({
 /* Em preview da Vercel a URL muda a cada deploy. VERCEL_URL e injetada
    automaticamente pela plataforma. O fallback so vale em desenvolvimento. */
 const baseUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ??
+  process.env.NEXT_PUBLIC_SITE_URL ||
   (process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
     : "http://localhost:3000");
