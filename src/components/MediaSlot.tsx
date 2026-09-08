@@ -47,10 +47,12 @@ export default function MediaSlot(props: ComImagem | SemImagem) {
   }
 
   return (
-    <span className="slot-label">
-      {props.rotulo}
-      <br />
-      {props.ratio.replace(" / ", ":")}
+    <span className="slot-empty">
+      <span className="slot-label">
+        {props.rotulo}
+        <br />
+        {props.ratio.replace(" / ", ":")}
+      </span>
     </span>
   );
 }
