@@ -24,13 +24,16 @@ import { site, CTA_PRIMARIO, CTA_SECUNDARIO } from "@/lib/site";
 export default function Hero() {
   return (
     <section id="hero" className="hero">
-      <div className="hero-bleed" aria-hidden="true">
+      <div className="hero-bleed">
+        {/* Imagem com conteudo, nao decoracao: a capa traz o nome da
+            mentoria. Por isso tem alt de verdade e o wrapper NAO e
+            aria-hidden. */}
         <Image
-          src="/hero/capa-resinart.png"
-          alt=""
+          src="/hero/caderno-resinart.png"
+          alt="Caderno da mentoria ResinArt sobre uma mesa de madeira, com caneta dourada ao lado. A capa traz o nome ResinArt e uma imagem de arcada dentária."
           fill
           priority
-          sizes="(max-width: 767px) 55vw, 34vw"
+          sizes="(max-width: 767px) 100vw, 520px"
           style={{ objectFit: "cover" }}
         />
       </div>

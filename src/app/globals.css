@@ -516,23 +516,52 @@ body {
   max-width: min(56ch, 100%);
 }
 
-/* A foto sangra: passa da borda direita do viewport e do topo e do
-   rodape da secao. A secao NAO tem overflow hidden de proposito, e o
-   body ja corta na horizontal. aspect-ratio casa com o arquivo real
-   (948x1659) para o object-fit: cover no filho nao precisar recortar
-   quase nada. A mascara linear dissolve so o rodape, para a foto nao
-   terminar em corte duro sobre a proxima secao. */
+/* A imagem sangra pela borda direita e dissolve na esquerda por mascara
+   linear, para nao terminar em corte reto perto do texto.
+
+   aspect-ratio casa com o arquivo real (398x239, paisagem). A moldura
+   anterior era retrato (948/1659) e teria recortado dois tercos da
+   largura do caderno com object-fit: cover.
+
+   TETO DE LARGURA: o arquivo tem 398px de largura nativa. Sem o teto de
+   520px, num monitor de 1920px a imagem seria ampliada quase 2x e o
+   serrilhado apareceria. Com o teto, a ampliacao maxima fica em 1.31x. */
 .hero-bleed {
   position: absolute;
-  inset: 0;
   z-index: 0;
-  top: 4%;
-  right: -6vw;
-  height: 88%;
-  aspect-ratio: 948 / 1659;
+  top: 50%;
+  right: -3vw;
+  transform: translateY(-50%);
+  width: min(38vw, 520px);
+  aspect-ratio: 398 / 239;
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgb(0 0 0 / 0.55) 9%,
+    #000 24%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgb(0 0 0 / 0.55) 9%,
+    #000 24%
+  );
+}
+
+/* No mobile vira faixa inferior em largura cheia. Em 380px a imagem
+   renderiza praticamente no tamanho nativo, entao nem amplia. */
+@media (max-width: 767px) {
+  .hero-bleed {
+    top: auto;
+    bottom: 5%;
+    right: 0;
+    left: 0;
+    width: 100%;
+    transform: none;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 20%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 20%);
+  }
 }
 
 .hero-title {
