@@ -13,10 +13,11 @@ import { site, CTA_PRIMARIO, CTA_SECUNDARIO } from "@/lib/site";
    voltar ao caminho da skill, trocar --font-display por --font-text na
    regra .hero-line-2 do globals.css.
 
-   A foto (capa do material, public/hero/capa-resinart.png) sangra:
-   ultrapassa a borda direita do viewport, passa do topo e do rodape da
-   secao, e se dissolve por mascara linear no rodape. Fica atras do
-   texto e nao recebe eventos de ponteiro.
+   A imagem (public/hero/caderno-resinart.png) sangra pela borda direita
+   do viewport e se dissolve na esquerda por mascara linear, para nao
+   terminar em corte reto perto do texto. Fica atras do texto, com a
+   vela de contraste entre as duas camadas, e nao recebe eventos de
+   ponteiro.
 
    Trava da Secao 4.7 mantida: 4 elementos de texto, headline em 2
    linhas, subtexto de 20 palavras, CTA visivel sem rolagem. */
