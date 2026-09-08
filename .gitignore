@@ -40,3 +40,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# arquivos de origem soltos na raiz (as copias versionadas vivem em public/)
+/ScreenRecording_*.mp4
+/ChatGPT Image *.png

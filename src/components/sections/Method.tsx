@@ -1,4 +1,6 @@
 import PillarsMotion from "@/components/motion/PillarsMotion";
+import ParallaxMedia from "@/components/motion/ParallaxMedia";
+import VideoTile from "@/components/motion/VideoTile";
 
 /* O METODO RESINART
    Familia de layout: linhas numeradas com ordinal grande.
@@ -63,6 +65,39 @@ export default function Method() {
           ))}
           </ol>
         </PillarsMotion>
+
+        {/* Gravacoes de tela da plataforma do curso. Ainda sem legenda real
+            do Uilian sobre o que cada uma mostra. */}
+        <div className="metodo-videos">
+          <figure>
+            <ParallaxMedia ratio="1170 / 1902">
+              <VideoTile
+                src="/video/metodo-tela-01.mp4"
+                label="Gravação de tela da plataforma do curso."
+              />
+            </ParallaxMedia>
+            <figcaption
+              className="eyebrow-plain"
+              style={{ marginTop: "var(--sp-3)", display: "block" }}
+            >
+              [ o que esta tela mostra ]
+            </figcaption>
+          </figure>
+          <figure>
+            <ParallaxMedia ratio="1170 / 2026">
+              <VideoTile
+                src="/video/metodo-tela-02.mp4"
+                label="Gravação de tela da plataforma do curso."
+              />
+            </ParallaxMedia>
+            <figcaption
+              className="eyebrow-plain"
+              style={{ marginTop: "var(--sp-3)", display: "block" }}
+            >
+              [ o que esta tela mostra ]
+            </figcaption>
+          </figure>
+        </div>
       </div>
     </section>
   );

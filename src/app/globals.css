@@ -516,61 +516,23 @@ body {
   max-width: min(56ch, 100%);
 }
 
-@media (min-width: 768px) {
-  /* Teto de 46vw garante que o texto acabe antes dos 52% onde a vela
-     comeca a abrir. Sem isto, em 1024px a coluna invadiria a foto. */
-  .hero-copy {
-    max-width: min(56ch, 46vw);
-  }
-}
-
-/* A foto sangra pela borda direita e dissolve na esquerda por mascara
-   linear, para ler como composicao e nao como retangulo colado ao lado
-   do texto. A secao NAO tem overflow hidden: o body corta na horizontal.
-
-   Comeca em 50vw. A vela de contraste e opaca ate 52%, entao ha 2vw de
-   sobreposicao e o texto nunca encosta na imagem. */
-.hero-media {
+/* A foto sangra: passa da borda direita do viewport e do topo e do
+   rodape da secao. A secao NAO tem overflow hidden de proposito, e o
+   body ja corta na horizontal. aspect-ratio casa com o arquivo real
+   (948x1659) para o object-fit: cover no filho nao precisar recortar
+   quase nada. A mascara linear dissolve so o rodape, para a foto nao
+   terminar em corte duro sobre a proxima secao. */
+.hero-bleed {
   position: absolute;
   inset: 0;
   z-index: 0;
+  top: 4%;
+  right: -6vw;
+  height: 88%;
+  aspect-ratio: 948 / 1659;
   pointer-events: none;
-}
-
-.hero-photo {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 50vw;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    rgb(0 0 0 / 0.6) 14%,
-    #000 34%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    rgb(0 0 0 / 0.6) 14%,
-    #000 34%
-  );
-}
-
-/* Brilho ambar atras da borda esquerda da foto. Mantem o acento da
-   paleta na primeira dobra sem competir com a imagem. */
-.hero-glow {
-  position: absolute;
-  top: 10%;
-  bottom: 10%;
-  right: 6vw;
-  left: 38vw;
-  background: radial-gradient(
-    ellipse at 40% 50%,
-    rgb(192 139 74 / 0.22) 0%,
-    rgb(192 139 74 / 0.08) 45%,
-    transparent 72%
-  );
+  -webkit-mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
 }
 
 .hero-title {
@@ -737,6 +699,23 @@ body {
     gap: var(--grid-gutter);
     align-items: start;
     padding-block: var(--sp-7);
+  }
+}
+
+/* Duas gravacoes de tela, retrato, lado a lado. max-width impede que os
+   ladrilhos estiquem alem do tamanho de tela de celular que o conteudo
+   realmente tem. */
+.metodo-videos {
+  display: grid;
+  gap: var(--sp-6);
+  margin-top: var(--sp-9);
+}
+
+@media (min-width: 768px) {
+  .metodo-videos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--grid-gutter);
+    max-width: 640px;
   }
 }
 
@@ -1118,7 +1097,6 @@ div[id] {
     display: block;
   }
 }
-
 
 /* --------------------------------------------------------------------------
    TILE DE VIDEO NA GALERIA

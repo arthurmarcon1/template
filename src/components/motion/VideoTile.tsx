@@ -34,9 +34,29 @@ export default function VideoTile({
     if (!v) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    v.play()
-      .then(() => setTocando(true))
-      .catch(() => setTocando(false));
+    /* Nao da play ao montar: espera entrar no viewport.
+
+       Isto deixou de ser detalhe quando as gravacoes de tela entraram na
+       secao do metodo, com 22 MB cada. Dar play ao montar fazia o
+       visitante baixar 44 MB de video que ainda estao muito abaixo da
+       dobra, antes mesmo de rolar. Com o observer, so baixa o que ele
+       de fato alcanca, e pausa de novo ao sair da tela. */
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          v.play()
+            .then(() => setTocando(true))
+            .catch(() => setTocando(false));
+        } else if (!v.paused) {
+          v.pause();
+          setTocando(false);
+        }
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.25 },
+    );
+
+    io.observe(v);
+    return () => io.disconnect();
   }, []);
 
   function alternar() {

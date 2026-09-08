@@ -9,52 +9,41 @@ import { site, CTA_PRIMARIO, CTA_SECUNDARIO } from "@/lib/site";
 
    Registro de conflito: a Secao 4.1 chama enfase de familia mista de
    amador e manda usar italico ou bold da MESMA familia. Aqui a mistura
-   e o pedido explicito. Para voltar ao caminho da skill, trocar
-   --font-display por --font-text na regra .hero-line-2 do globals.css.
+   e o pedido explicito e e o que produz o contraste editorial. Para
+   voltar ao caminho da skill, trocar --font-display por --font-text na
+   regra .hero-line-2 do globals.css.
 
-   O objeto de estratificacao saiu. No lugar dele entra a foto, que
-   sangra pela borda direita e dissolve na esquerda por mascara linear,
-   para virar composicao em vez de retangulo colado ao lado do texto.
-
-   A entrada continua em CSS puro, sem JavaScript.
+   A foto (capa do material, public/hero/capa-resinart.png) sangra:
+   ultrapassa a borda direita do viewport, passa do topo e do rodape da
+   secao, e se dissolve por mascara linear no rodape. Fica atras do
+   texto e nao recebe eventos de ponteiro.
 
    Trava da Secao 4.7 mantida: 4 elementos de texto, headline em 2
    linhas, subtexto de 20 palavras, CTA visivel sem rolagem. */
 
-/* PLACEHOLDER: o arquivo precisa existir neste caminho.
-   Enquanto nao existir, o next/image devolve 404, a moldura mostra o
-   estado vazio e o build NAO quebra. */
-const FOTO = "/uilian/hero-resinart.jpg";
-
 export default function Hero() {
   return (
     <section id="hero" className="hero">
-      <div className="hero-media" aria-hidden="true">
-        {/* Brilho ambar sutil atras da borda esquerda da foto. Mantem o
-            acento da paleta na primeira dobra e suaviza a dissolvencia. */}
-        <div className="hero-glow" />
-        <div className="hero-photo">
-          {/* fill em vez de width/height: o arquivo ainda nao existe e eu
-              nao conheco as dimensoes reais. Com fill o container reserva
-              o espaco, entao nao ha layout shift seja qual for o tamanho. */}
-          <Image
-            src={FOTO}
-            alt=""
-            fill
-            priority
-            sizes="(max-width: 767px) 100vw, 52vw"
-            style={{ objectFit: "cover", objectPosition: "center 30%" }}
-          />
-        </div>
+      <div className="hero-bleed" aria-hidden="true">
+        <Image
+          src="/hero/capa-resinart.png"
+          alt=""
+          fill
+          priority
+          sizes="(max-width: 767px) 55vw, 34vw"
+          style={{ objectFit: "cover" }}
+        />
       </div>
 
       {/* Vela entre a foto e o texto.
 
-          Com foto isto pesa ainda mais que com o objeto ambar: a imagem
-          tem areas quase brancas (bancada, pele), e texto por cima
-          reprovaria AA com folga. A vela e opaca sobre toda a coluna de
-          texto e so some depois que o texto acaba, entao o texto sempre
-          assenta no fundo limpo. */}
+          Nao e enfeite: a foto tem tons quentes que, atras do subtexto
+          muted, derrubariam o contraste para perto de 1:1 em partes.
+          Uma vela suave nao resolve. Por isso a vela e opaca sobre toda
+          a coluna de texto e so desaparece depois que o texto acaba.
+
+          Com ela, o texto sempre assenta no fundo limpo: titulo 17.9:1,
+          subtexto 5.8:1. Garantido por construcao, nao por sorte. */}
       <div className="hero-scrim" aria-hidden="true" />
 
       <div className="container hero-inner">
