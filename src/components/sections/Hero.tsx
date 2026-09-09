@@ -27,15 +27,24 @@ export default function Hero() {
     <section id="hero" className="hero">
       <div className="hero-bleed">
         {/* Imagem com conteudo, nao decoracao: a capa traz o nome da
-            mentoria. Por isso tem alt de verdade e o wrapper NAO e
-            aria-hidden. */}
+            mentoria. Por isso tem alt de verdade e nao e aria-hidden.
+
+            object-position: center e NAO center right. Medi a imagem
+            coluna a coluna: o caderno ocupa de 0% a 76% da largura e a
+            faixa de 80% a 100% e mesa escura (luminancia 0.006).
+            Cortar pela direita descartaria justamente o logotipo, que
+            vive entre 16% e 40%.
+
+            loading eager + fetchPriority high no lugar de priority, que
+            o Next 16 deprecou (node_modules/next/dist/docs, image.md). */}
         <Image
           src="/hero/caderno-resinart.png"
           alt="Caderno da mentoria ResinArt sobre uma mesa de madeira, com caneta dourada ao lado. A capa traz o nome ResinArt e uma imagem de arcada dentária."
           fill
-          priority
-          sizes="(max-width: 767px) 100vw, 520px"
-          style={{ objectFit: "cover" }}
+          loading="eager"
+          fetchPriority="high"
+          sizes="(max-width: 767px) 100vw, 46vw"
+          style={{ objectFit: "cover", objectPosition: "center" }}
         />
       </div>
 

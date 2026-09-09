@@ -18,7 +18,7 @@
   --font-text: var(--font-archivo), system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, Menlo, monospace;
 
-  --text-hero: clamp(3.5rem, 7vw, 7rem);
+  --text-hero: clamp(2.75rem, 6.1vw, 6rem);
   --text-d1: clamp(2.25rem, 7vw, 4.5rem);
   --text-d2: clamp(1.875rem, 4.5vw, 3.25rem);
   --text-d3: clamp(1.375rem, 3vw, 2rem);
@@ -466,14 +466,14 @@ body {
 .hero {
   position: relative;
   isolation: isolate;
-  min-height: 100dvh;
+  /* svh e nao vh nem dvh: vh ignora a barra do navegador no mobile e
+     corta o CTA; svh usa a viewport pequena, com a barra visivel, que
+     e o pior caso e portanto o seguro. */
+  min-height: 100svh;
   display: grid;
   align-content: center;
-  padding-top: calc(var(--nav-h) + var(--sp-7));
-  /* Vazio garantido abaixo do CTA antes da proxima secao.
-     align-content: center distribui o resto, entao o vazio real
-     fica acima destes 26vh, nunca abaixo. */
-  padding-bottom: 14vh;
+  padding-top: calc(var(--nav-h) + var(--sp-6));
+  padding-bottom: 16vh;
 }
 
 .hero-inner {
@@ -492,7 +492,7 @@ body {
   background: linear-gradient(
     to right,
     var(--c-bg) 0%,
-    var(--c-bg) 52%,
+    var(--c-bg) 56%,
     transparent 74%
   );
 }
@@ -512,8 +512,19 @@ body {
 }
 
 /* Coluna esquerda com margem generosa a direita, para o objeto respirar. */
+/* A largura da coluna e o que decide o numero de linhas do titulo, nao
+   o tamanho da fonte. Para "Resina composta" caber em 1 linha e "para
+   os casos que voce encaminha." em 2, a coluna precisa de pelo menos
+   7.65x o corpo da fonte. Dai o teto de 52vw casado com o clamp de
+   6.1vw: a razao fica em 8.5x e sobra folga. */
 .hero-copy {
-  max-width: min(56ch, 100%);
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .hero-copy {
+    max-width: min(52vw, 880px);
+  }
 }
 
 /* A imagem sangra pela borda direita e dissolve na esquerda por mascara
@@ -526,41 +537,87 @@ body {
    TETO DE LARGURA: o arquivo tem 398px de largura nativa. Sem o teto de
    520px, num monitor de 1920px a imagem seria ampliada quase 2x e o
    serrilhado apareceria. Com o teto, a ampliacao maxima fica em 1.31x. */
+/* A foto ocupa a coluna direita inteira, do topo ao fim da secao, sem
+   margem e sem raio de canto, sangrando na borda direita da viewport.
+   Sem mascara: quem funde a imagem no fundo agora e o gradiente em
+   ::before, que e mais previsivel que mask-image e nao depende de
+   suporte a mask composite. */
 .hero-bleed {
   position: absolute;
   z-index: 0;
-  top: 50%;
-  right: -3vw;
-  transform: translateY(-50%);
-  width: min(38vw, 520px);
-  aspect-ratio: 398 / 239;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 58vw;
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    rgb(0 0 0 / 0.55) 9%,
-    #000 24%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    rgb(0 0 0 / 0.55) 9%,
-    #000 24%
-  );
+  border-radius: 0;
+  overflow: hidden;
 }
 
-/* No mobile vira faixa inferior em largura cheia. Em 380px a imagem
-   renderiza praticamente no tamanho nativo, entao nem amplia. */
+/* Gradiente da esquerda para a direita: do preto de fundo opaco ate
+   transparente aos 40% da largura da imagem. E o que dissolve a borda
+   esquerda dura e funde a foto no fundo. */
+.hero-bleed::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to right, var(--c-bg) 0%, transparent 40%);
+}
+
+/* Escurecimento geral. */
+.hero-bleed::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgb(0 0 0 / 0.25);
+}
+
+/* No mobile a foto vira fundo da secao inteira, com o texto por cima.
+   Nunca empilhada acima do texto: e ambiente, nao conteudo.
+
+   O gradiente passa a correr de baixo para cima, e o escurecimento sobe
+   de 0.25 para 0.86. Motivo medido: os dentes na capa tem luminancia
+   0.873, e com 0.25 o subtexto daria 1.66:1. AA pede 4.5:1, o que exige
+   0.86. Com o texto ocupando quase toda a altura em 360x640, nao ha
+   faixa livre onde expor a foto sem texto por cima. */
 @media (max-width: 767px) {
   .hero-bleed {
-    top: auto;
-    bottom: 5%;
-    right: 0;
     left: 0;
-    width: 100%;
-    transform: none;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 20%);
-    mask-image: linear-gradient(to bottom, transparent 0%, #000 20%);
+  }
+
+  .hero-bleed::before {
+    background: linear-gradient(
+      to top,
+      transparent 0%,
+      rgb(10 10 11 / 0.35) 18%,
+      var(--c-bg) 62%
+    );
+  }
+
+  .hero-bleed::after {
+    background: rgb(0 0 0 / 0.86);
+  }
+
+  .hero {
+    padding-top: calc(var(--nav-h) + var(--sp-4));
+    padding-bottom: 6vh;
+  }
+}
+
+/* Abaixo de 480px o piso de 2.75rem faz "Resina composta" quebrar em
+   duas linhas sozinha, e o titulo vai a 4. Com 2.25rem ele cabe em uma
+   e o total volta a 3, o que tira 64px de altura. Sem isso a hero
+   estoura 28px em 360x640 e o CTA sai da tela. */
+@media (max-width: 479px) {
+  .hero-title {
+    font-size: clamp(2.25rem, 10vw, 2.75rem);
+    margin-block: var(--sp-4) var(--sp-5);
+  }
+
+  .hero-sub {
+    margin-bottom: var(--sp-5);
   }
 }
 
