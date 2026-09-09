@@ -43,7 +43,16 @@ export default function Hero() {
           fill
           loading="eager"
           fetchPriority="high"
-          sizes="(max-width: 767px) 100vw, 46vw"
+          /* sizes em pixels absolutos, e nao em vw, de proposito.
+
+             Com object-fit: cover num container mais alto que a
+             proporcao da imagem, o navegador escala pela ALTURA. A
+             largura renderizada nao tem relacao com a largura da caixa:
+             em 1440x900 a caixa tem 605px mas a imagem e desenhada com
+             1599px. Declarar "46vw" fazia o Next servir 768px e o
+             navegador ampliar 2.08x, e era essa a falta de resolucao,
+             nao o arquivo de origem. */
+          sizes="(max-width: 767px) 1280px, 1600px"
           style={{ objectFit: "cover", objectPosition: "center" }}
         />
       </div>

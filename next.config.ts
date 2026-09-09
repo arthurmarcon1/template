@@ -5,9 +5,13 @@ const nextConfig: NextConfig = {
     /* AVIF primeiro, WebP como segundo. O Next negocia pelo Accept do
        navegador e cai em AVIF ou WebP sem precisar converter na mao. */
     formats: ["image/avif", "image/webp"],
-    /* Larguras alinhadas com o grid: coluna cheia, 7/12, 5/12 e 4/12
-       nos breakpoints que a pagina realmente usa. */
-    deviceSizes: [380, 640, 768, 1024, 1280, 1400],
+    /* Larguras alinhadas com o grid, mais as faixas altas que a hero
+       exige. A foto da hero usa object-fit: cover num container muito
+       mais alto que a proporcao da imagem, entao o navegador escala pela
+       ALTURA: em 1920x1080 a imagem e renderizada com 1919px de largura,
+       ainda que a caixa tenha 806px. Sem 1600 e 1920 aqui, o maior
+       arquivo disponivel era 1400 e a ampliacao passava de 2x. */
+    deviceSizes: [380, 640, 768, 1024, 1280, 1400, 1600, 1920],
   },
   async headers() {
     return [

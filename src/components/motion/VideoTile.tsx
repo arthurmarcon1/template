@@ -41,18 +41,40 @@ export default function VideoTile({
        visitante baixar 44 MB de video que ainda estao muito abaixo da
        dobra, antes mesmo de rolar. Com o observer, so baixa o que ele
        de fato alcanca, e pausa de novo ao sair da tela. */
+    /* Dispara antes de o video chegar na tela (rootMargin de 300px) e
+       com limiar baixo (5%), para que ele ja esteja rodando quando o
+       visitante alcanca a secao, em vez de comecar so depois de um
+       quarto do elemento estar visivel. */
+    const tentarTocar = () => {
+      v.play()
+        .then(() => setTocando(true))
+        .catch(() => {
+          /* Alguns navegadores recusam o play enquanto nao ha dado
+             suficiente em buffer. Estes arquivos sao grandes, entao
+             vale uma segunda tentativa quando o buffer encher. */
+          setTocando(false);
+          v.addEventListener(
+            "canplay",
+            () => {
+              v.play()
+                .then(() => setTocando(true))
+                .catch(() => setTocando(false));
+            },
+            { once: true },
+          );
+        });
+    };
+
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
-          v.play()
-            .then(() => setTocando(true))
-            .catch(() => setTocando(false));
+          tentarTocar();
         } else if (!v.paused) {
           v.pause();
           setTocando(false);
         }
       },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.25 },
+      { rootMargin: "300px 0px 300px 0px", threshold: 0.05 },
     );
 
     io.observe(v);
