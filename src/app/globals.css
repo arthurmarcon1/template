@@ -497,24 +497,6 @@ body {
   );
 }
 
-/* No mobile com a foto em faixa, a vela sai de cena.
-
-   Ela era o motivo real de o caderno aparecer so como um fiapo: com
-   z-index 1 contra o z-index 0 da foto, ficava POR CIMA, opaca ate 76%
-   da altura e transparente so aos 94%. Ou seja, cobria quase toda a
-   faixa, e nem a correcao de proporcao aparecia.
-
-   Agora quem cuida do contraste e o proprio gradiente da faixa, e o
-   texto termina acima dela, entao nao ha o que proteger aqui.
-   A vela volta apenas no fallback de tela curta, mais abaixo, onde a
-   foto e fundo de tela cheia e o texto de fato passa por cima. */
-@media (max-width: 767px) {
-  .hero-scrim {
-    display: none;
-  }
-}
-
-/* Coluna esquerda com margem generosa a direita, para o objeto respirar. */
 /* A largura da coluna e o que decide o numero de linhas do titulo, nao
    o tamanho da fonte. Para "Resina composta" caber em 1 linha e "para
    os casos que voce encaminha." em 2, a coluna precisa de pelo menos
@@ -577,76 +559,36 @@ body {
   background: rgb(0 0 0 / 0.25);
 }
 
-/* No mobile a foto vira fundo da secao inteira, com o texto por cima.
-   Nunca empilhada acima do texto: e ambiente, nao conteudo.
+/* A foto sai da hero no mobile.
 
-   O gradiente passa a correr de baixo para cima, e o escurecimento sobe
-   de 0.25 para 0.86. Motivo medido: os dentes na capa tem luminancia
-   0.873, e com 0.25 o subtexto daria 1.66:1. AA pede 4.5:1, o que exige
-   0.86. Com o texto ocupando quase toda a altura em 360x640, nao ha
-   faixa livre onde expor a foto sem texto por cima. */
+   Foi tentada de tres formas antes de desistir:
+   1. fundo em object-fit: cover -> recortava 74% da largura, o caderno
+      e o logotipo ficavam fora do quadro
+   2. faixa na proporcao do arquivo -> resolvia o recorte, mas o
+      .hero-scrim ficava por cima e reduzia tudo a um fiapo
+   3. faixa com fade curto -> ainda aparecia so a parte de baixo
+
+   Numa tela de 390px a imagem e paisagem de 1.78, entao so cabe como
+   uma tira de ~220px. Nessa altura o caderno vira miniatura e nao
+   sustenta o heroi. Fora dele, o mobile fica so tipografia sobre
+   preto, coerente com a direcao da pagina.
+
+   A foto continua no desktop, onde tem a coluna direita inteira. */
 @media (max-width: 767px) {
   .hero-bleed {
-    left: 0;
+    display: none;
   }
 
-  /* A foto deixa de ser fundo em object-fit: cover e vira uma FAIXA na
-     proporcao real do arquivo.
-
-     Motivo: cover num container de 393x852 contra uma imagem de
-     proporcao 1.78 desenha a imagem com 1514px de largura e mostra
-     apenas 393px, ou seja 26% dela. O caderno e o logotipo ficavam
-     inteiramente fora do recorte, e o que sobrava na faixa visivel era
-     um fragmento da espiral e da mesa.
-
-     Com aspect-ratio igual ao do arquivo, cover nao recorta nada e o
-     caderno aparece inteiro. */
-  .hero-bleed {
-    inset: auto 0 0 0;
-    /* Altura explicita em vez de aspect-ratio.
-
-       Matematicamente e a mesma coisa (941/1672 da a proporcao do
-       arquivo), mas nao depende de o navegador resolver aspect-ratio
-       num elemento absoluto com height: auto, que e onde o Safari
-       costuma divergir. Aqui a altura sai de uma conta simples sobre
-       a largura da viewport. */
-    height: calc(100vw * 941 / 1672);
+  /* Sem foto nao ha o que velar. */
+  .hero-scrim {
+    display: none;
   }
 
-  /* Dissolve a borda de cima, para a faixa nao comecar num corte reto,
-     e a de baixo, onde ela encosta na secao seguinte. */
-  .hero-bleed::before {
-    /* Dissolvencia CURTA nas duas pontas.
-
-       A versao anterior cobria os 32% de cima e era ela que cortava o
-       caderno: medindo a imagem por linha, o conteudo se concentra
-       entre 15% e 45% da altura, ou seja o fade comia justamente a
-       faixa do logotipo.
-
-       Agora fecha em 10% no topo e 6% na base. Nas duas pontas a
-       imagem ja e escura por conta propria (media 0.067 no topo e
-       0.085 na base), entao a emenda com o fundo nao aparece mesmo
-       com fade curto. */
-    background: linear-gradient(
-      to bottom,
-      var(--c-bg) 0%,
-      rgb(10 10 11 / 0.45) 4%,
-      transparent 10%,
-      transparent 94%,
-      rgb(10 10 11 / 0.4) 100%
-    );
-  }
-
-  .hero-bleed::after {
-    background: rgb(0 0 0 / 0.25);
-  }
-
-  /* align-content: start no lugar de center, e sem respiro embaixo: o
-     conteudo sobe e libera a faixa de baixo para a foto. */
+  /* Sem a faixa no rodape, o conteudo volta a centralizar. */
   .hero {
-    align-content: start;
+    align-content: center;
     padding-top: calc(var(--nav-h) + var(--sp-4));
-    padding-bottom: 0;
+    padding-bottom: 8vh;
   }
 }
 
@@ -655,37 +597,6 @@ body {
    botao secundario cairia sobre a parte translucida do gradiente.
    Aqui o gradiente fecha quase todo, e a foto vira so um fio no
    rodape. Contraste primeiro. */
-/* Telas curtas nao comportam a faixa: em 375x667 ela comecaria 110px
-   acima do fim do texto. Ali a foto volta a ser fundo com o gradiente
-   protegendo o contraste, que era o comportamento anterior. O caderno
-   fica parcial, mas o texto nunca cai sobre a imagem. */
-@media (max-width: 767px) and (max-height: 719px) {
-  /* Aqui a foto volta a ser fundo de tela cheia e o texto passa por
-     cima, entao a vela e necessaria de novo. */
-  .hero-scrim {
-    display: block;
-    background: linear-gradient(
-      to bottom,
-      var(--c-bg) 0%,
-      var(--c-bg) 76%,
-      transparent 94%
-    );
-  }
-
-  .hero-bleed {
-    inset: 0;
-    height: auto;
-  }
-
-  .hero-bleed::before {
-    background: linear-gradient(
-      to top,
-      transparent 0%,
-      rgb(10 10 11 / 0.55) 5%,
-      var(--c-bg) 10%
-    );
-  }
-}
 
 @media (max-width: 359px) {
   /* Em 320x568 o conteudo ocupava 558px de 568px: nao sobrava faixa
@@ -709,15 +620,6 @@ body {
 
   .hero-actions {
     gap: var(--sp-4);
-  }
-
-  .hero-bleed::before {
-    background: linear-gradient(
-      to top,
-      transparent 0%,
-      rgb(10 10 11 / 0.55) 3%,
-      var(--c-bg) 6%
-    );
   }
 }
 
