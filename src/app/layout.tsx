@@ -122,11 +122,10 @@ function JsonLd() {
     description:
       "Cirurgião-dentista e professor, especializado em casos complexos e retratamentos em resina composta e laminados cerâmicos.",
     url: baseUrl,
-    // PLACEHOLDER: telefone no formato +55DDNUMERO
-    telephone: "[+55 00 00000-0000]",
+    telephone: site.telefone,
     address: {
       "@type": "PostalAddress",
-      addressLocality: "[cidade]",
+      addressLocality: site.cidade,
       addressRegion: site.estado,
       addressCountry: "BR",
       streetAddress: "[endereço da clínica]",

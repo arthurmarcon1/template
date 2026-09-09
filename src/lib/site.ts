@@ -13,14 +13,14 @@ export const site = {
     url: "https://instagram.com/uiliancm",
   },
 
-  /* PLACEHOLDER: substituir [NUMERO] pelo WhatsApp real no formato
-     internacional sem simbolos, ex. 5555999999999.
-     O link so funciona depois disso. */
+  /* +55 (55) 99946-2128
+     No formato do wa.me: codigo do pais 55, DDD 55, numero 999462128. */
+  telefone: "+55 55 99946-2128",
   whatsapp:
-    "https://wa.me/[NUMERO]?text=Ol%C3%A1%2C%20quero%20entrar%20na%20lista%20de%20espera%20da%20ResinArt",
+    "https://wa.me/5555999462128?text=Ol%C3%A1%2C%20quero%20entrar%20na%20lista%20de%20espera%20da%20ResinArt",
 
   cro: "[CRO-RS 00000]",
-  cidade: "[cidade]",
+  cidade: "Santiago",
   estado: "RS",
 } as const;
 

@@ -603,20 +603,37 @@ body {
      caderno aparece inteiro. */
   .hero-bleed {
     inset: auto 0 0 0;
-    aspect-ratio: 1672 / 941;
-    height: auto;
+    /* Altura explicita em vez de aspect-ratio.
+
+       Matematicamente e a mesma coisa (941/1672 da a proporcao do
+       arquivo), mas nao depende de o navegador resolver aspect-ratio
+       num elemento absoluto com height: auto, que e onde o Safari
+       costuma divergir. Aqui a altura sai de uma conta simples sobre
+       a largura da viewport. */
+    height: calc(100vw * 941 / 1672);
   }
 
   /* Dissolve a borda de cima, para a faixa nao comecar num corte reto,
      e a de baixo, onde ela encosta na secao seguinte. */
   .hero-bleed::before {
+    /* Dissolvencia CURTA nas duas pontas.
+
+       A versao anterior cobria os 32% de cima e era ela que cortava o
+       caderno: medindo a imagem por linha, o conteudo se concentra
+       entre 15% e 45% da altura, ou seja o fade comia justamente a
+       faixa do logotipo.
+
+       Agora fecha em 10% no topo e 6% na base. Nas duas pontas a
+       imagem ja e escura por conta propria (media 0.067 no topo e
+       0.085 na base), entao a emenda com o fundo nao aparece mesmo
+       com fade curto. */
     background: linear-gradient(
       to bottom,
       var(--c-bg) 0%,
-      rgb(10 10 11 / 0.45) 14%,
-      transparent 32%,
-      transparent 84%,
-      rgb(10 10 11 / 0.55) 100%
+      rgb(10 10 11 / 0.45) 4%,
+      transparent 10%,
+      transparent 94%,
+      rgb(10 10 11 / 0.4) 100%
     );
   }
 
@@ -657,7 +674,6 @@ body {
 
   .hero-bleed {
     inset: 0;
-    aspect-ratio: auto;
     height: auto;
   }
 
