@@ -40,7 +40,8 @@ const casos: Caso[] = [
      nao recortar conteudo. Os tres videos sao retrato de gravacao de
      tela ou de celular, entao ganham colunas estreitas lado a lado. */
   { id: "caso-01", ratio: "1170 / 1902", label: "[ caso 01 ]", span: 4, video: "/video/caso-01.mp4" },
-  { id: "caso-02", ratio: "480 / 608", label: "[ caso 02 ]", span: 4, video: "/video/caso-02.mp4" },
+  /* caso-02 voltou a ser placeholder: o arquivo foi removido do repo. */
+  { id: "caso-02", ratio: "4 / 5", label: "[ caso 02 ]", span: 4 },
   { id: "caso-03", ratio: "1170 / 2026", label: "[ caso 03 ]", span: 4, video: "/video/caso-03.mp4" },
   { id: "caso-04", ratio: "3 / 2", label: "[ caso 04 ]", span: 7 },
   { id: "caso-05", ratio: "4 / 5", label: "[ caso 05 ]", span: 5 },

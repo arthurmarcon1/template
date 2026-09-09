@@ -587,22 +587,74 @@ body {
     left: 0;
   }
 
+  /* O gradiente e quem protege o contraste, nao o escurecimento.
+
+     Antes ele so ficava opaco acima de 62% da altura, mas o texto ocupa
+     de 7% a 86% (medindo de baixo, que e o eixo do "to top"). Boa parte
+     do subtexto caia sobre a faixa translucida. Agora fica opaco a
+     partir de 12%, entao todo o texto assenta no fundo limpo e a foto
+     aparece so na faixa de baixo, onde nao ha texto.
+
+     Com o gradiente fazendo esse trabalho, o escurecimento volta aos
+     0.25 pedidos: ele agora e estetico, nao estrutural. */
   .hero-bleed::before {
     background: linear-gradient(
       to top,
       transparent 0%,
-      rgb(10 10 11 / 0.35) 18%,
-      var(--c-bg) 62%
+      rgb(10 10 11 / 0.55) 5%,
+      var(--c-bg) 10%
     );
   }
 
   .hero-bleed::after {
-    background: rgb(0 0 0 / 0.86);
+    background: rgb(0 0 0 / 0.25);
   }
 
+  /* align-content: start no lugar de center, e sem respiro embaixo: o
+     conteudo sobe e libera a faixa de baixo para a foto. */
   .hero {
+    align-content: start;
     padding-top: calc(var(--nav-h) + var(--sp-4));
-    padding-bottom: 6vh;
+    padding-bottom: 0;
+  }
+}
+
+/* Telas de 320px (iPhone SE de primeira geracao e Androids antigos):
+   o conteudo ocupa 558px de 568px, entao nao sobra faixa livre e o
+   botao secundario cairia sobre a parte translucida do gradiente.
+   Aqui o gradiente fecha quase todo, e a foto vira so um fio no
+   rodape. Contraste primeiro. */
+@media (max-width: 359px) {
+  /* Em 320x568 o conteudo ocupava 558px de 568px: nao sobrava faixa
+     livre e o botao secundario caia sobre a parte translucida do
+     gradiente. Apertando ~50px de respiros o conteudo cabe em 508px e
+     abre 10% de faixa livre no rodape, onde a foto aparece sem texto
+     por cima. Nada aqui mexe no texto, so em escala e espacamento. */
+  .hero {
+    padding-top: calc(var(--nav-h) + var(--sp-2));
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 10vw, 2.25rem);
+    margin-block: var(--sp-3) var(--sp-4);
+  }
+
+  .hero-sub {
+    font-size: var(--fs-body);
+    margin-bottom: var(--sp-4);
+  }
+
+  .hero-actions {
+    gap: var(--sp-4);
+  }
+
+  .hero-bleed::before {
+    background: linear-gradient(
+      to top,
+      transparent 0%,
+      rgb(10 10 11 / 0.55) 3%,
+      var(--c-bg) 6%
+    );
   }
 }
 
@@ -791,19 +843,6 @@ body {
 /* Duas gravacoes de tela, retrato, lado a lado. max-width impede que os
    ladrilhos estiquem alem do tamanho de tela de celular que o conteudo
    realmente tem. */
-.metodo-videos {
-  display: grid;
-  gap: var(--sp-6);
-  margin-top: var(--sp-9);
-}
-
-@media (min-width: 768px) {
-  .metodo-videos {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--grid-gutter);
-    max-width: 640px;
-  }
-}
 
 /* --- 5. Galeria de casos ------------------------------------------------ */
 .gallery {
@@ -1181,6 +1220,32 @@ div[id] {
 @media (min-width: 900px) {
   .nav-links {
     display: block;
+  }
+}
+
+/* A barra estourava 52px em 360px. O CTA tem white-space: nowrap e 25
+   caracteres, entao a pilula nao encolhe: logotipo 120px + CTA 236px +
+   gap 24px = 380px numa largura util de 328px. O excedente era cortado
+   pelo overflow-x do body.
+
+   Nao troquei o rotulo do CTA: a Secao 4.5 exige um rotulo por intencao,
+   repetido em nav, heroi e rodape. O que muda e a escala. */
+@media (max-width: 560px) {
+  .nav-inner {
+    gap: var(--sp-3);
+  }
+
+  .nav-logo {
+    font-size: 1rem;
+  }
+
+  .nav-pill,
+  .nav-cta {
+    padding-inline: var(--sp-3);
+  }
+
+  .nav-cta {
+    font-size: 0.8125rem;
   }
 }
 
