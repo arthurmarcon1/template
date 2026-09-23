@@ -306,3 +306,13 @@
     opacity: 0;
   }
 }
+
+/* Hexagono da logo como marcador (lista, linha do tempo). Forma por
+   clip-path; a cor vem do background de quem usa. Elemento decorativo. */
+@layer components {
+  .hex {
+    display: inline-block;
+    flex-shrink: 0;
+    clip-path: polygon(50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+  }
+}

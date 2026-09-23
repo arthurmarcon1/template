@@ -37,3 +37,30 @@ export const problema = {
   },
   fechamento: "Você ganha o evento. A gente assume o trabalho.",
 };
+
+/* Os detalhes de cada etapa precisam ser validados com a F&M. */
+export const comoFunciona = {
+  titulo: "Como funciona",
+  passos: [
+    {
+      titulo: "Conversa",
+      texto: "Você diz a data, as quadras disponíveis e as modalidades.",
+      detalhe: "[CONFIRMAR: com quanto tempo de antecedência e por qual canal]",
+    },
+    {
+      titulo: "Planejamento",
+      texto: "Montamos categorias, formato, cronograma e a divulgação.",
+      detalhe: "[CONFIRMAR: o que o clube aprova antes de abrir as inscrições]",
+    },
+    {
+      titulo: "Dia do torneio",
+      texto: "Nossa equipe conduz a mesa, os jogos e a premiação.",
+      detalhe: "[CONFIRMAR: tamanho da equipe no dia]",
+    },
+    {
+      titulo: "Pós-evento",
+      texto: "Resultados publicados e fotos para o seu clube divulgar.",
+      detalhe: "[CONFIRMAR: prazo de entrega das fotos]",
+    },
+  ],
+};
