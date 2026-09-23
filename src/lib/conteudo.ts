@@ -125,3 +125,27 @@ export const diferenciais = {
     ],
   },
 };
+
+export const modalidades = {
+  titulo: "Padel e Beach Tennis",
+  itens: [
+    {
+      nome: "Padel",
+      frase: "Torneios de duplas na quadra do seu clube, com categorias por nível.",
+      categorias: "[CONFIRMAR: categorias oferecidas no Padel]",
+      foto: {
+        src: "/fotos/padel.webp",
+        alt: "Dupla disputando um ponto em torneio de Padel organizado pela F&M",
+      },
+    },
+    {
+      nome: "Beach Tennis",
+      frase: "Torneios de duplas na areia do seu clube, com categorias por nível.",
+      categorias: "[CONFIRMAR: categorias oferecidas no Beach Tennis]",
+      foto: {
+        src: "/fotos/beach-tennis.webp",
+        alt: "Atletas em jogo de Beach Tennis durante torneio organizado pela F&M",
+      },
+    },
+  ],
+};
