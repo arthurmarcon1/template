@@ -187,3 +187,21 @@ export const equipe = {
    estiver vazia. So entram depoimentos reais, com autorizacao. Formato:
    { texto: "...", nome: "Nome da pessoa", clube: "Clube, cidade" } */
 export const depoimentos: { texto: string; nome: string; clube: string }[] = [];
+
+export const faq = {
+  titulo: "Perguntas frequentes",
+  itens: [
+    { pergunta: "Quanto custa? Como é cobrado?", resposta: "[CONFIRMAR: modelo de cobrança e faixa de valores]" },
+    { pergunta: "Com quanto tempo de antecedência preciso marcar?", resposta: "[CONFIRMAR: antecedência mínima]" },
+    { pergunta: "Quantas quadras preciso ter?", resposta: "[CONFIRMAR: número mínimo de quadras]" },
+    { pergunta: "Vocês atendem quais cidades?", resposta: "[CONFIRMAR: cidades e região de atuação]" },
+    { pergunta: "O clube precisa fornecer algo além das quadras?", resposta: "[CONFIRMAR: o que fica por conta do clube]" },
+    { pergunta: "Como funciona o chaveamento no Gripo?", resposta: "[CONFIRMAR: como atletas e público acompanham chaves e resultados]" },
+    { pergunta: "Dá para fazer torneio só de Padel, só de Beach Tennis ou misto?", resposta: "[CONFIRMAR: formatos possíveis]" },
+  ],
+};
+
+export const ctaFinal = {
+  titulo: "Bora colocar o seu clube no calendário?",
+  botao: "Quero um torneio no meu clube",
+};

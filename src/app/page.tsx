@@ -8,6 +8,8 @@ import Servicos from "@/components/sections/Servicos";
 import Diferenciais from "@/components/sections/Diferenciais";
 import Modalidades from "@/components/sections/Modalidades";
 import Torneios from "@/components/sections/Torneios";
+import Faq from "@/components/sections/Faq";
+import CtaFinal from "@/components/sections/CtaFinal";
 
 /* Landing da F&M. As secoes entram em src/components/sections/, na
    ordem do docs/LANDING_FM.md. O main desconta a altura do header fixo. */
@@ -26,6 +28,8 @@ export default function Page() {
         <Diferenciais />
         <Modalidades />
         <Torneios />
+        <Faq />
+        <CtaFinal />
       </main>
       <Footer />
       <WhatsappFlutuante />
