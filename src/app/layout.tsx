@@ -1,39 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Bodoni_Moda, Archivo, Geist_Mono } from "next/font/google";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-/* Par tipografico A (taste-skill Secao 4.1).
-   display: "swap" e obrigatorio. adjustFontFallback fica ligado (padrao
-   do next/font): ele gera uma fonte de fallback com metricas ajustadas
-   por size-adjust, que e o que impede o troca-fonte de gerar CLS.
-   O preload dos woff2 tambem e automatico para os subsets declarados. */
-
-const bodoni = Bodoni_Moda({
-  subsets: ["latin"],
-  variable: "--font-bodoni",
-  display: "swap",
-  preload: true,
-  axes: ["opsz"],
-  /* A segunda voz do titulo e italico de verdade. Sem carregar o estilo
-     o navegador sintetiza um falso italico inclinando a romana, o que
-     num display de 7rem fica evidente. */
-  style: ["normal", "italic"],
-});
-
-const archivo = Archivo({
-  subsets: ["latin"],
-  variable: "--font-archivo",
-  display: "swap",
-  preload: true,
-});
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-geist-mono",
-  display: "swap",
-  preload: true,
-});
+/* Tipografia ainda nao definida. Quando a direcao visual fechar,
+   carregar as fontes aqui via next/font/google (display: "swap")
+   e expor como variaveis CSS no <body>. */
 
 /* Em preview da Vercel a URL muda a cada deploy. VERCEL_URL e injetada
    automaticamente pela plataforma. O fallback so vale em desenvolvimento. */
@@ -43,29 +14,26 @@ const baseUrl =
     ? `https://${process.env.VERCEL_URL}`
     : "http://localhost:3000");
 
-const TITULO = "ResinArt | Mentoria em resina composta com Uilian Machado";
-const DESCRICAO =
-  "Mentoria em odontologia restauradora para dentistas que querem dominar resina composta e resolver na própria cadeira os casos complexos que hoje encaminham.";
+const TITULO = `${site.nome} | Torneios de padel e beach tennis`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: TITULO,
-  description: DESCRICAO,
-  applicationName: "ResinArt",
-  authors: [{ name: site.nome }],
+  description: site.descricao,
+  applicationName: site.nome,
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "pt_BR",
     url: "/",
-    siteName: "ResinArt",
+    siteName: site.nome,
     title: TITULO,
-    description: DESCRICAO,
+    description: site.descricao,
   },
   twitter: {
     card: "summary_large_image",
     title: TITULO,
-    description: DESCRICAO,
+    description: site.descricao,
   },
   /* Preview NAO deve ser indexado. Trocar para index/follow apenas no
      deploy de producao, com dominio definitivo. */
@@ -76,8 +44,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  /* A pagina e escura e travada. Um valor so. */
-  themeColor: "#0A0A0B",
+  themeColor: "#FFFFFF",
 };
 
 export default function RootLayout({
@@ -85,10 +52,8 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR">
-      <body
-        className={`${bodoni.variable} ${archivo.variable} ${geistMono.variable}`}
-      >
-        <a href="#hero" className="skip-link">
+      <body>
+        <a href="#conteudo" className="skip-link">
           Pular para o conteúdo
         </a>
         {children}
@@ -98,93 +63,31 @@ export default function RootLayout({
   );
 }
 
-/* ---------------------------------------------------------------------------
-   JSON-LD
-
-   Dois tipos: Dentist (o profissional) e Course (a ResinArt).
-
-   O que NAO esta aqui, de proposito: AggregateRating. Os 98% vem de 25
-   avaliacoes do Facebook, que sao de terceiro e nao avaliacoes coletadas
-   pelo proprio site. Marcar isso como AggregateRating do Course seria
-   review auto-declarada, o que as diretrizes do Google tratam como spam
-   estrutural e pode render penalidade manual. O numero continua na pagina
-   como texto, que e legitimo. So nao vai para o schema.
-
-   Enquanto hasCourseInstance e offers estiverem com placeholder, o Course
-   nao fica elegivel a rich result. Isso e esperado nesta fase.
-   --------------------------------------------------------------------------- */
+/* JSON-LD: a empresa como SportsOrganization. Os eventos (SportsEvent)
+   entram quando houver calendario real de torneios. */
 function JsonLd() {
-  const dentista = {
+  const organizacao = {
     "@context": "https://schema.org",
-    "@type": "Dentist",
-    "@id": `${baseUrl}/#dentista`,
+    "@type": "SportsOrganization",
+    "@id": `${baseUrl}/#organizacao`,
     name: site.nome,
-    description:
-      "Cirurgião-dentista e professor, especializado em casos complexos e retratamentos em resina composta e laminados cerâmicos.",
+    description: site.descricao,
     url: baseUrl,
     telephone: site.telefone,
+    sport: site.modalidades,
     address: {
       "@type": "PostalAddress",
       addressLocality: site.cidade,
       addressRegion: site.estado,
       addressCountry: "BR",
-      streetAddress: "[endereço da clínica]",
-      postalCode: "[CEP]",
     },
     sameAs: [site.instagram.url],
-    medicalSpecialty: "Dentistry",
-    knowsAbout: [
-      "Resina composta",
-      "Laminados cerâmicos",
-      "Retratamento estético",
-      "Odontologia restauradora",
-    ],
-  };
-
-  const curso = {
-    "@context": "https://schema.org",
-    "@type": "Course",
-    "@id": `${baseUrl}/#curso`,
-    name: "ResinArt",
-    description:
-      "Mentoria em odontologia estética e restauradora para cirurgiões-dentistas, focada em execução de casos complexos em resina composta.",
-    url: `${baseUrl}/#metodo`,
-    inLanguage: "pt-BR",
-    provider: {
-      "@type": "Person",
-      "@id": `${baseUrl}/#dentista`,
-      name: site.nome,
-    },
-    audience: {
-      "@type": "EducationalAudience",
-      educationalRole: "Cirurgião-dentista",
-    },
-    // PLACEHOLDER: preencher quando turma, formato e preco existirem.
-    hasCourseInstance: {
-      "@type": "CourseInstance",
-      courseMode: "[online, presencial ou híbrido]",
-      courseWorkload: "[ISO 8601, ex. PT40H]",
-      startDate: "[AAAA-MM-DD]",
-      location: {
-        "@type": "Place",
-        name: "[local ou plataforma]",
-      },
-    },
-    offers: {
-      "@type": "Offer",
-      priceCurrency: "BRL",
-      price: "[valor]",
-      availability: "https://schema.org/PreOrder",
-      url: site.whatsapp,
-    },
   };
 
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{
-        __html: JSON.stringify([dentista, curso]),
-      }}
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(organizacao) }}
     />
   );
 }
