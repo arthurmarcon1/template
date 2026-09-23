@@ -1,10 +1,26 @@
 import type { Metadata, Viewport } from "next";
+import { Barlow, Barlow_Condensed } from "next/font/google";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-/* Tipografia ainda nao definida. Quando a direcao visual fechar,
-   carregar as fontes aqui via next/font/google (display: "swap")
-   e expor como variaveis CSS no <body>. */
+/* Barlow Condensed nos titulos, Barlow no corpo. next/font hospeda os
+   arquivos no proprio dominio, faz preload e gera fallback com metricas
+   ajustadas (adjustFontFallback), o que evita salto de layout na troca.
+   As variaveis sao lidas por design/tokens.css (--font-display/body). */
+
+const barlowCondensed = Barlow_Condensed({
+  subsets: ["latin"],
+  weight: ["700", "800"],
+  variable: "--font-barlow-condensed",
+  display: "swap",
+});
+
+const barlow = Barlow({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-barlow",
+  display: "swap",
+});
 
 /* Em preview da Vercel a URL muda a cada deploy. VERCEL_URL e injetada
    automaticamente pela plataforma. O fallback so vale em desenvolvimento. */
@@ -44,14 +60,19 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FFFFFF",
+  themeColor: "#10313E",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR">
+    /* As variaveis das fontes ficam no <html> porque os tokens do
+       @theme resolvem var(--font-barlow...) no :root. */
+    <html
+      lang="pt-BR"
+      className={`${barlowCondensed.variable} ${barlow.variable}`}
+    >
       <body>
         <a href="#conteudo" className="skip-link">
           Pular para o conteúdo
@@ -73,14 +94,8 @@ function JsonLd() {
     name: site.nome,
     description: site.descricao,
     url: baseUrl,
-    telephone: site.telefone,
+    telephone: `+${site.whatsapp.digitos}`,
     sport: site.modalidades,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: site.cidade,
-      addressRegion: site.estado,
-      addressCountry: "BR",
-    },
     sameAs: [site.instagram.url],
   };
 

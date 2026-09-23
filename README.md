@@ -1,7 +1,7 @@
-# Torneios de padel e beach tennis
+# F&M Eventos Esportivos
 
-Landing page da [Nome da empresa], organizadora de torneios de padel e
-beach tennis.
+Landing page da F&M, organizadora de torneios de Padel e Beach Tennis
+para clubes. O plano de trabalho está em `docs/LANDING_FM.md`.
 
 > Projeto em construção. Tudo que aparece entre colchetes `[ ]` é espaço
 > reservado e precisa ser preenchido com informação real antes de publicar.
@@ -15,16 +15,22 @@ npm run build
 npm run lint
 ```
 
-**Stack.** Next.js 16 (App Router), React 19, Tailwind v4, Motion,
-Phosphor Icons.
+**Stack.** Next.js 16 (App Router), React 19, Tailwind v4, three.js
+0.184 (carregado sob demanda), Motion, Phosphor Icons.
 
 ```
 design/tokens.css              cores, tipografia, espaçamento
 src/lib/site.ts                dados da empresa e placeholders
 src/app/layout.tsx             SEO, dados estruturados, fontes
 src/components/sections/       um arquivo por seção
-public/                        imagens e vídeos
+src/components/ball/           bola 3D (web component + montagem)
+public/bola/                   logo e imagens da bola
+public/fotos/                  fotos reais dos torneios
 ```
+
+**Rotas de trabalho.** `/tokens` mostra cores, tipografia e botões (só em
+desenvolvimento). `/bola` é o visualizador da bola com orbit livre e
+exportação OBJ/GLB (fora do índice de busca).
 
 ## Deploy na Vercel
 

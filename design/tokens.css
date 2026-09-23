@@ -1,21 +1,110 @@
 /* ==========================================================================
-   Design Tokens
+   F&M Eventos Esportivos — Design Tokens
 
-   Fonte unica de verdade para cores, tipografia e espacamento.
-   Valores neutros provisorios: serao substituidos quando a direcao
-   visual da landing for definida.
+   Fonte unica de verdade. Tudo aqui vira variavel CSS em :root e, via
+   @theme do Tailwind v4, utility (bg-petroleo-900, text-agua-400,
+   font-display, text-h2, max-w-content, md:...).
+
+   As paletas e escalas padrao do Tailwind sao zeradas de proposito:
+   so existem as cores da marca e os raios permitidos (max 8px).
    ========================================================================== */
 
+@theme {
+  /* ---- Cores -----------------------------------------------------------
+     Contraste WCAG (texto sobre fundo):
+       creme-50     / petroleo-900  11.92  AAA
+       bege-200     / petroleo-900   9.56  AAA
+       bola-400     / petroleo-900   9.67  AAA
+       neutro-400   / petroleo-900   5.54  AA
+       agua-400     / petroleo-900   4.58  AA, no limite
+       petroleo-700 / creme-50       8.19  AAA
+       agua-600     / creme-50       4.87  AA
+       petroleo-500 / creme-50       4.56  AA, no limite
+       agua-400     / creme-50       2.60  FALHA: nao usar como texto
+       agua-400     / petroleo-500   1.75  FALHA
+       neutro-400   / petroleo-500   2.12  FALHA
+
+     Regras de uso (docs/LANDING_FM.md, "Regras de contraste"):
+     - texto verde-agua no claro usa agua-600, nunca agua-400;
+     - agua-400 no escuro so em titulos, eyebrow e destaques; texto
+       corrido no escuro e creme-50 ou neutro-400;
+     - petroleo-500 nao e fundo de secao com texto: so cards, bordas e
+       detalhes (texto sobre ele, so creme-50). */
+  --color-*: initial;
+  --color-petroleo-900: #10313e; /* fundo escuro principal */
+  --color-petroleo-700: #294b54; /* logo, titulos no claro, bordas */
+  --color-petroleo-500: #507275; /* cards, bordas e detalhes; nao e fundo de secao */
+  --color-agua-400: #729e91;     /* destaques e detalhes, so sobre escuro */
+  --color-agua-600: #4f6e65;     /* texto verde-agua sobre fundo claro */
+  --color-neutro-400: #9ca7a4;   /* texto secundario sobre escuro */
+  --color-creme-50: #f1efe8;     /* fundo claro, texto sobre escuro */
+  --color-bege-200: #e2d7b7;     /* divisores, selos, hexagono */
+  --color-bola-400: #d6e23f;     /* acento raro: bola e CTA principal */
+
+  /* ---- Tipografia ------------------------------------------------------
+     Titulos: Barlow Condensed 700/800, caixa alta.
+     Corpo: Barlow 400/500/600. As familias sao carregadas no layout
+     (next/font) e chegam aqui como variaveis. */
+  --font-*: initial;
+  --font-display: var(--font-barlow-condensed), "Arial Narrow",
+    "Roboto Condensed", system-ui, sans-serif;
+  --font-body: var(--font-barlow), system-ui, -apple-system, "Segoe UI",
+    Roboto, sans-serif;
+
+  --text-*: initial;
+  --text-display: clamp(3rem, 7.5vw, 6rem);
+  --text-display--line-height: 0.92;
+  --text-h1: clamp(2.5rem, 5.5vw, 4.5rem);
+  --text-h1--line-height: 0.95;
+  --text-h2: clamp(2rem, 4.2vw, 3.25rem);
+  --text-h2--line-height: 1;
+  --text-h3: clamp(1.5rem, 2.4vw, 2rem);
+  --text-h3--line-height: 1.05;
+  --text-lead: clamp(1.125rem, 1.6vw, 1.3125rem);
+  --text-lead--line-height: 1.5;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.6;
+  --text-small: 0.9375rem;
+  --text-small--line-height: 1.5;
+  --text-eyebrow: 0.8125rem;
+  --text-eyebrow--line-height: 1.4;
+
+  --tracking-*: initial;
+  --tracking-display: 0.005em;
+  --tracking-eyebrow: 0.22em; /* "ORGANIZACAO · COMPETICAO · EXPERIENCIA" */
+
+  /* ---- Espacamento -----------------------------------------------------
+     Base de 4px (p-1 = 4px, p-4 = 16px, p-12 = 48px...). */
+  --spacing: 0.25rem;
+
+  /* ---- Layout ---------------------------------------------------------- */
+  --container-*: initial;
+  --container-content: 75rem; /* 1200px: max-w-content */
+  --container-text: 40rem;    /* medida de leitura: max-w-text */
+
+  /* ---- Breakpoints -----------------------------------------------------
+     Mobile first. sm 576 / md 768 / lg 1024 / xl 1280. */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 36rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+
+  /* ---- Raios (regra da marca: maximo 8px) ------------------------------ */
+  --radius-*: initial;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+}
+
+/* Tokens que nao geram utility, usados pelo CSS base e pelas secoes. */
 :root {
-  --c-bg: #ffffff;
-  --c-text: #111111;
-  --c-text-muted: #5f6368;
-  --c-rule: #e5e7eb;
-  --c-accent: #111111;
-  --c-accent-text: #ffffff;
+  --gutter: clamp(1rem, 4vw, 2rem);        /* margem lateral: 16px a 32px */
+  --section-y: clamp(4rem, 9vw, 7.5rem);   /* respiro vertical de secao */
+  --stack-gap: clamp(1.5rem, 3vw, 2.5rem); /* entre blocos dentro da secao */
+  --header-h: 4.5rem;
 
-  --fs-body: 1rem;
-  --lh-body: 1.6;
+  --btn-h: 3rem; /* 48px: alvo de toque confortavel */
 
-  --radius: 0.5rem;
+  /* Anel de foco: muda de cor por superficie (ver .surface-dark). */
+  --focus-ring: var(--color-petroleo-700);
 }
