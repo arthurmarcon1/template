@@ -268,3 +268,41 @@
     transform: translateY(0.75rem);
   }
 }
+
+/* ==========================================================================
+   Bola do hero
+   ========================================================================== */
+
+@layer components {
+  .hero-ball {
+    position: relative;
+    aspect-ratio: 1;
+    width: 100%;
+  }
+
+  .hero-ball-img,
+  .hero-ball-stage {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* troca imagem -> 3D com fade, sem mexer no layout */
+  .hero-ball-stage {
+    opacity: 0;
+    transition: opacity 400ms ease;
+  }
+
+  .hero-ball-img {
+    transition: opacity 400ms ease;
+  }
+
+  .hero-ball[data-vivo] .hero-ball-stage {
+    opacity: 1;
+  }
+
+  .hero-ball[data-vivo] .hero-ball-img {
+    opacity: 0;
+  }
+}
