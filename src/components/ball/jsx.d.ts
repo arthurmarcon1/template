@@ -12,6 +12,7 @@ declare module "react" {
         name?: string;
         background?: string;
         autorotate?: boolean;
+        hero?: boolean;
       };
     }
   }

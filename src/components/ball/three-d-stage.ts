@@ -16,6 +16,21 @@
      name       — nome base dos arquivos exportados (padrao "model")
      background — cor CSS atras da cena
      autorotate — giro lento ate o usuario interagir
+     hero       — modo elemento de pagina (ver "Modo hero" abaixo)
+
+   Modo hero (<three-d-stage hero autorotate>):
+     - sem toolbar nem nota, fundo transparente, altura vinda do CSS do
+       container (nao 100vh);
+     - OrbitControls sem zoom, pan nem rotacao, e canvas com
+       pointer-events: none: a bola nunca captura scroll nem toque;
+     - sem chao de sombra e sem shadow map;
+     - autorotate lento girando a propria bola (a luz fica parada em
+       relacao a camera) e leve inclinacao seguindo o mouse, com damping;
+     - enquadramento: a bola ocupa ~85% do menor lado do canvas;
+     - luz pensada para fundo #10313E, com rim light verde-agua por tras;
+     - para de renderizar fora da tela;
+     - snapshot() devolve um PNG transparente do quadro inicial.
+   Sem o atributo, o comportamento e o do visualizador original.
 
    Uso:
      const { defineThreeDStage } = await import("./three-d-stage");
@@ -36,6 +51,13 @@ const stylesheet = `
     overflow: hidden;
   }
   canvas { display: block; outline: none; }
+  :host([hero]) {
+    height: 100%;
+    background: transparent;
+  }
+  :host([hero]) canvas { pointer-events: none; }
+  :host([hero]) .toolbar,
+  :host([hero]) .note { display: none; }
   .toolbar {
     position: absolute;
     right: 16px;
@@ -96,6 +118,15 @@ function download(blob: Blob, filename: string) {
 
 type StageReady = { THREE: typeof THREE };
 
+/* Parametros do modo hero. */
+const HERO = {
+  ocupacao: 0.85, // fracao do menor lado do canvas ocupada pela bola
+  giro: (Math.PI * 2) / 50, // rad/s: uma volta a cada 50s
+  inclinacao: THREE.MathUtils.degToRad(7), // maximo seguindo o mouse
+  amortecimento: 4, // maior = segue o mouse mais rapido
+  pixelRatioMax: 1.5,
+};
+
 export class ThreeDStage extends HTMLElement {
   /** Resolve com { THREE } quando a cena esta viva. Monte o modelo depois
    *  de `await stage.ready` para nada correr contra o boot. */
@@ -117,6 +148,24 @@ export class ThreeDStage extends HTMLElement {
   private _ro?: ResizeObserver;
   private _loop?: () => void;
   private _object?: THREE.Object3D;
+  private _hero = false;
+  private _heroTilt?: THREE.Group; // inclinacao pelo mouse
+  private _heroSpin?: THREE.Group; // autorotate
+  private _heroRadius = 0;
+  private _heroCenter = new THREE.Vector3();
+  private _mouse = new THREE.Vector2();
+  private _tiltNow = new THREE.Vector2();
+  private _spinOn = false;
+  private _visible = true;
+  private _io?: IntersectionObserver;
+  private _timer = new THREE.Timer();
+  private _onPointer = (e: PointerEvent) => {
+    if (e.pointerType !== "mouse") return;
+    this._mouse.set(
+      (e.clientX / window.innerWidth) * 2 - 1,
+      (e.clientY / window.innerHeight) * 2 - 1,
+    );
+  };
 
   constructor() {
     super();
@@ -157,6 +206,12 @@ export class ThreeDStage extends HTMLElement {
       if (this._renderer && this._loop) {
         this._renderer.setAnimationLoop(this._loop);
         this._ro?.observe(this);
+        this._io?.observe(this);
+        if (this._hero) {
+          window.addEventListener("pointermove", this._onPointer, {
+            passive: true,
+          });
+        }
       }
       return;
     }
@@ -175,6 +230,8 @@ export class ThreeDStage extends HTMLElement {
   private _boot() {
     const bg = this.getAttribute("background");
     if (bg) this.style.setProperty("--stage-bg", bg);
+    this._hero = this.hasAttribute("hero");
+    const hero = this._hero;
     // preserveDrawingBuffer mantem o ultimo quadro legivel depois da
     // composicao (toDataURL / drawImage): e o que permite capturar a cena.
     const renderer = new THREE.WebGLRenderer({
@@ -182,9 +239,13 @@ export class ThreeDStage extends HTMLElement {
       alpha: true,
       preserveDrawingBuffer: true,
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.setPixelRatio(
+      Math.min(window.devicePixelRatio || 1, hero ? HERO.pixelRatioMax : 2),
+    );
+    // PCFSoftShadowMap foi descontinuado no three 0.184 (cai em PCF de
+    // qualquer jeito); declarar PCF evita o aviso no console.
+    renderer.shadowMap.enabled = !hero;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
     this._renderer = renderer;
     this.shadowRoot!.insertBefore(renderer.domElement, this._err);
 
@@ -200,34 +261,61 @@ export class ThreeDStage extends HTMLElement {
     controls.dampingFactor = 0.08;
     this._controls = controls;
 
-    // Estudio neutro: ceu/chao suave, luz principal com sombra e um
-    // preenchimento fraco por tras para a silhueta nunca ficar preta.
-    scene.add(new THREE.HemisphereLight(0xffffff, 0xd8d2c4, 1.0));
     const key = new THREE.DirectionalLight(0xffffff, 2.2);
-    key.position.set(4, 7, 5);
-    key.castShadow = true;
-    key.shadow.mapSize.set(2048, 2048);
-    key.shadow.bias = -0.0002;
     this._key = key;
-    scene.add(key);
-    const fill = new THREE.DirectionalLight(0xfff4e6, 0.5);
-    fill.position.set(-5, 3, -4);
-    scene.add(fill);
-
     const ground = new THREE.Mesh(
       new THREE.PlaneGeometry(200, 200),
       new THREE.ShadowMaterial({ opacity: 0.18 }),
     );
-    ground.rotation.x = -Math.PI / 2;
-    ground.receiveShadow = true;
     this._ground = ground;
-    scene.add(ground);
 
-    controls.autoRotate = this.hasAttribute("autorotate");
-    controls.autoRotateSpeed = 1.2;
-    controls.addEventListener("start", () => {
+    if (hero) {
+      // Hero: nada de interacao com a cena. O canvas ainda tem
+      // pointer-events: none no CSS, entao scroll e toque passam direto.
+      controls.enableZoom = false;
+      controls.enablePan = false;
+      controls.enableRotate = false;
       controls.autoRotate = false;
-    });
+      this._spinOn = this.hasAttribute("autorotate");
+
+      // Luz para fundo escuro #10313E. A bola e amarela e o fundo e
+      // escuro: o ceu da hemisferica e neutro-quente e o chao puxa para o
+      // petroleo, o que deixa a parte de baixo da bola no tom do fundo sem
+      // apagar. A principal vem de cima e da frente, a de preenchimento
+      // abre a sombra, e o rim light verde-agua por tras desenha a
+      // silhueta contra o fundo.
+      scene.add(new THREE.HemisphereLight(0xfff8ea, 0x1d4a55, 1.1));
+      key.intensity = 2.4;
+      scene.add(key);
+      const fill = new THREE.DirectionalLight(0xf4f7ff, 0.8);
+      this._heroFill = fill;
+      scene.add(fill);
+      const rim = new THREE.DirectionalLight(0x729e91, 5);
+      this._heroRim = rim;
+      scene.add(rim);
+    } else {
+      // Estudio neutro: ceu/chao suave, luz principal com sombra e um
+      // preenchimento fraco por tras para a silhueta nunca ficar preta.
+      scene.add(new THREE.HemisphereLight(0xffffff, 0xd8d2c4, 1.0));
+      key.position.set(4, 7, 5);
+      key.castShadow = true;
+      key.shadow.mapSize.set(2048, 2048);
+      key.shadow.bias = -0.0002;
+      scene.add(key);
+      const fill = new THREE.DirectionalLight(0xfff4e6, 0.5);
+      fill.position.set(-5, 3, -4);
+      scene.add(fill);
+
+      ground.rotation.x = -Math.PI / 2;
+      ground.receiveShadow = true;
+      scene.add(ground);
+
+      controls.autoRotate = this.hasAttribute("autorotate");
+      controls.autoRotateSpeed = 1.2;
+      controls.addEventListener("start", () => {
+        controls.autoRotate = false;
+      });
+    }
 
     const fit = () => {
       const w = this.clientWidth || 1;
@@ -235,15 +323,35 @@ export class ThreeDStage extends HTMLElement {
       renderer.setSize(w, h);
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
+      if (hero) this._frameHero();
     };
     fit();
     this._ro = new ResizeObserver(fit);
     this._loop = () => {
-      controls.update();
+      if (hero) {
+        if (!this._visible) return;
+        this._timer.update();
+        this._tickHero(Math.min(this._timer.getDelta(), 0.1));
+      } else {
+        controls.update();
+      }
       renderer.render(scene, camera);
     };
+    if (hero) {
+      // Fora da tela nao ha o que desenhar: o loop vira no-op.
+      this._io = new IntersectionObserver(([e]) => {
+        this._visible = e.isIntersecting;
+        this._timer.update(); // descarta o tempo parado
+      });
+    }
     if (this.isConnected) {
       this._ro.observe(this);
+      this._io?.observe(this);
+      if (hero) {
+        window.addEventListener("pointermove", this._onPointer, {
+          passive: true,
+        });
+      }
       renderer.setAnimationLoop(this._loop);
     }
 
@@ -255,6 +363,8 @@ export class ThreeDStage extends HTMLElement {
     // mantido: mover o elemento no documento nao reconstroi a cena.
     this._renderer?.setAnimationLoop(null);
     this._ro?.disconnect();
+    this._io?.disconnect();
+    window.removeEventListener("pointermove", this._onPointer);
   }
 
   /** Mostra (e assume) o objeto. Substitui o anterior, liga sombras em
@@ -267,6 +377,10 @@ export class ThreeDStage extends HTMLElement {
     const ground = this._ground;
     if (!scene || !camera || !controls || !key || !ground) {
       throw new Error("three-d-stage: not ready — await stage.ready first");
+    }
+    if (this._hero) {
+      this._setHeroObject(object);
+      return;
     }
     if (this._object) scene.remove(this._object);
     this._object = object;
@@ -298,6 +412,148 @@ export class ThreeDStage extends HTMLElement {
     }
     scene.add(object);
     this._setButtonsEnabled(true);
+  }
+
+  private _heroFill?: THREE.DirectionalLight;
+  private _heroRim?: THREE.DirectionalLight;
+
+  /** Hero: pendura o objeto em dois grupos (inclinacao > giro), ambos
+   *  centrados no centro real da bola, e enquadra. */
+  private _setHeroObject(object: THREE.Object3D) {
+    const scene = this._scene!;
+    if (this._heroTilt) scene.remove(this._heroTilt);
+    this._object = object;
+    object.updateMatrixWorld(true);
+
+    // Esfera envolvente exata: centro pela Box3 precisa e raio pela maior
+    // distancia de um vertice a esse centro. A esfera da Box3 comum de um
+    // objeto girado, ou a uniao das esferas das partes, sai bem maior que
+    // a bola e o enquadramento fica pequeno.
+    object.traverse((o) => {
+      const mesh = o as THREE.Mesh;
+      if (!mesh.isMesh) return;
+      mesh.castShadow = false;
+      mesh.receiveShadow = false;
+    });
+    const box = new THREE.Box3().setFromObject(object, true);
+    const sphere = new THREE.Sphere(box.getCenter(new THREE.Vector3()), 0);
+    const v = new THREE.Vector3();
+    object.traverse((o) => {
+      const mesh = o as THREE.Mesh;
+      if (!mesh.isMesh) return;
+      const pos = mesh.geometry.attributes.position;
+      for (let i = 0; i < pos.count; i++) {
+        v.fromBufferAttribute(pos, i).applyMatrix4(mesh.matrixWorld);
+        sphere.radius = Math.max(sphere.radius, v.distanceTo(sphere.center));
+      }
+    });
+    this._heroCenter.copy(sphere.center);
+    this._heroRadius = sphere.radius;
+
+    const tilt = new THREE.Group();
+    const spin = new THREE.Group();
+    tilt.position.copy(sphere.center);
+    object.position.sub(sphere.center);
+    spin.add(object);
+    tilt.add(spin);
+    scene.add(tilt);
+    this._heroTilt = tilt;
+    this._heroSpin = spin;
+    this._frameHero();
+  }
+
+  /** Camera na mesma direcao do visualizador (a bola foi orientada para
+   *  ela, logo de frente), a uma distancia em que o diametro projetado
+   *  ocupa HERO.ocupacao do menor lado do canvas. */
+  private _frameHero() {
+    const camera = this._camera;
+    const r = this._heroRadius;
+    if (!camera || !r) return;
+    const tanV = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+    // no retrato o lado limitante e a largura
+    const tanMin = tanV * Math.min(1, camera.aspect);
+    // raio projetado = r / sqrt(d^2 - r^2) / tan  =>  resolve para d
+    const k = r / (HERO.ocupacao * tanMin);
+    const dist = Math.sqrt(r * r + k * k);
+    const dir = new THREE.Vector3(1, 0.55, 1.25).normalize();
+    camera.position.copy(this._heroCenter).addScaledVector(dir, dist);
+    camera.near = dist / 100;
+    camera.far = dist * 10;
+    camera.lookAt(this._heroCenter);
+    camera.updateProjectionMatrix();
+    camera.updateMatrixWorld(); // right/up abaixo leem a matriz nova
+
+    // luzes presas a camera: principal acima e a esquerda, preenchimento
+    // embaixo a direita (onde a principal nao chega), rim por tras e a
+    // direita, contornando a silhueta no lado mais escuro
+    const right = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 0);
+    const up = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 1);
+    const at = (x: number, y: number, z: number) =>
+      this._heroCenter
+        .clone()
+        .addScaledVector(right, x * dist)
+        .addScaledVector(up, y * dist)
+        .addScaledVector(dir, z * dist);
+    this._key?.position.copy(at(-0.6, 0.9, 1));
+    this._heroFill?.position.copy(at(0.9, -0.5, 0.7));
+    this._heroRim?.position.copy(at(0.9, -0.35, -0.8));
+    this._key?.target.position.copy(this._heroCenter);
+    this._heroFill?.target.position.copy(this._heroCenter);
+    this._heroRim?.target.position.copy(this._heroCenter);
+    this._key?.target.updateMatrixWorld();
+    this._heroFill?.target.updateMatrixWorld();
+    this._heroRim?.target.updateMatrixWorld();
+  }
+
+  private _tickHero(dt: number) {
+    const camera = this._camera;
+    const tilt = this._heroTilt;
+    const spin = this._heroSpin;
+    if (!camera || !tilt || !spin) return;
+    if (this._spinOn) spin.rotation.y += HERO.giro * dt;
+
+    // inclina poucos graus na direcao do mouse, com amortecimento
+    // exponencial (independe da taxa de quadros)
+    const a = 1 - Math.exp(-HERO.amortecimento * dt);
+    this._tiltNow.lerp(this._mouse, a);
+    const right = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 0);
+    const up = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 1);
+    tilt.quaternion
+      .setFromAxisAngle(up, this._tiltNow.x * HERO.inclinacao)
+      .multiply(
+        new THREE.Quaternion().setFromAxisAngle(
+          right,
+          this._tiltNow.y * HERO.inclinacao,
+        ),
+      );
+  }
+
+  /** PNG com fundo transparente do quadro inicial do hero (sem giro nem
+   *  inclinacao), no tamanho pedido. Usado para gerar ball-static. */
+  snapshot(size = 1200): string {
+    const renderer = this._renderer;
+    const camera = this._camera;
+    const scene = this._scene;
+    if (!renderer || !camera || !scene) throw new Error("three-d-stage: not ready");
+    renderer.setAnimationLoop(null);
+    const pr = renderer.getPixelRatio();
+    renderer.setPixelRatio(1);
+    renderer.setSize(size, size, false);
+    camera.aspect = 1;
+    camera.updateProjectionMatrix();
+    if (this._hero) {
+      this._frameHero();
+      this._heroSpin?.rotation.set(0, 0, 0);
+      this._heroTilt?.quaternion.identity();
+    }
+    renderer.setClearColor(0x000000, 0);
+    renderer.render(scene, camera);
+    const url = renderer.domElement.toDataURL("image/png");
+    renderer.setPixelRatio(pr);
+    this._ro?.disconnect();
+    this._ro?.observe(this); // o ResizeObserver reajusta ao tamanho real
+    if (this._loop) renderer.setAnimationLoop(this._loop);
+    return url;
   }
 
   private get _basename() {
