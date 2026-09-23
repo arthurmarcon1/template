@@ -149,3 +149,41 @@ export const modalidades = {
     },
   ],
 };
+
+export const torneios = {
+  titulo: "Torneios realizados",
+  /* Legenda: nome do torneio, clube e data. Trocar cada [CONFIRMAR] pelo
+     dado real ao colocar a foto correspondente em public/fotos/. */
+  galeria: Array.from({ length: 8 }, (_, i) => {
+    const n = String(i + 1).padStart(2, "0");
+    return {
+      src: `/fotos/torneio-${n}.webp`,
+      alt: `Foto do torneio ${n} organizado pela F&M [CONFIRMAR: descrever a cena]`,
+      legenda: "[CONFIRMAR: nome do torneio, clube e data]",
+    };
+  }),
+  instagram: "Ver mais no Instagram",
+};
+
+export const equipe = {
+  titulo: "Quem organiza",
+  pessoas: [
+    {
+      nome: "Eduardo Friedrich [CONFIRMAR nome completo]",
+      linha: "[CONFIRMAR: uma linha sobre o Eduardo]",
+      instagram: { handle: "@edufriedrich_", url: "https://instagram.com/edufriedrich_" },
+      foto: { src: "/fotos/eduardo.webp", alt: "Retrato de Eduardo Friedrich, da F&M" },
+    },
+    {
+      nome: "João Maneck",
+      linha: "[CONFIRMAR: uma linha sobre o João]",
+      instagram: { handle: "@joao.maneck", url: "https://instagram.com/joao.maneck" },
+      foto: { src: "/fotos/joao.webp", alt: "Retrato de João Maneck, da F&M" },
+    },
+  ],
+};
+
+/* Depoimentos de clubes: ate 3. A secao fica oculta enquanto a lista
+   estiver vazia. So entram depoimentos reais, com autorizacao. Formato:
+   { texto: "...", nome: "Nome da pessoa", clube: "Clube, cidade" } */
+export const depoimentos: { texto: string; nome: string; clube: string }[] = [];
