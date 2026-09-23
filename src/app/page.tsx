@@ -10,7 +10,9 @@ export default function Page() {
   return (
     <>
       <Header />
-      <main id="conteudo" className="pt-(--header-h)">
+      {/* tabIndex -1: o skip-link do layout aponta para ca e o foco
+          precisa pousar no main, nao so rolar ate ele. */}
+      <main id="conteudo" tabIndex={-1} className="pt-(--header-h) outline-none">
         <div className="container-content section">
           <h1 className="text-h1">{site.nome}</h1>
           <p className="mt-4 max-w-text">{site.descricao}</p>

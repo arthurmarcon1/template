@@ -9,8 +9,9 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
-    /* ancoras nao ficam escondidas atras do header fixo */
-    scroll-padding-top: calc(var(--header-h) + 1rem);
+    /* ancoras nao ficam escondidas atras do header fixo. O respiro acima
+       do titulo vem do padding da propria secao. */
+    scroll-padding-top: var(--header-h);
   }
 
   body {
@@ -250,5 +251,20 @@
   .whatsapp-flutuante:hover {
     background: var(--color-petroleo-700);
     color: var(--color-creme-50);
+  }
+
+  .whatsapp-flutuante {
+    transition:
+      opacity 200ms ease,
+      transform 200ms ease,
+      visibility 200ms;
+  }
+
+  /* Com hero na pagina, fica escondido ate a hero sair da tela.
+     visibility tambem tira o botao da ordem de Tab enquanto oculto. */
+  :root:has([data-hero]) .whatsapp-flutuante:not([data-hero-saiu]) {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(0.75rem);
   }
 }

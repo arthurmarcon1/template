@@ -101,7 +101,7 @@
   --gutter: clamp(1rem, 4vw, 2rem);        /* margem lateral: 16px a 32px */
   --section-y: clamp(4rem, 9vw, 7.5rem);   /* respiro vertical de secao */
   --stack-gap: clamp(1.5rem, 3vw, 2.5rem); /* entre blocos dentro da secao */
-  --header-h: 4.5rem;
+  --header-h: 4.5rem; /* altura total do header fixo, borda inclusa */
 
   --btn-h: 3rem; /* 48px: alvo de toque confortavel */
 

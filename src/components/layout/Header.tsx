@@ -10,8 +10,8 @@ import MobileMenu from "./MobileMenu";
 
 export default function Header() {
   return (
-    <header className="surface-dark fixed inset-x-0 top-0 z-50 border-b border-petroleo-700">
-      <div className="container-content flex h-(--header-h) items-center justify-between gap-6">
+    <header className="surface-dark fixed inset-x-0 top-0 z-50 h-(--header-h) border-b border-petroleo-700">
+      <div className="container-content flex h-full items-center justify-between gap-6">
         <a href="#conteudo" className="shrink-0 rounded-md">
           {/* [CONFIRMAR: logo vetorial] PNG provisorio. */}
           <Image
