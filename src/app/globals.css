@@ -215,3 +215,40 @@
     color: var(--color-creme-50);
   }
 }
+
+/* ==========================================================================
+   Header, footer e WhatsApp flutuante
+   ========================================================================== */
+
+@layer components {
+  .surface-dark a.nav-link {
+    font-weight: 600;
+    text-decoration-color: transparent;
+    text-underline-offset: 0.4em;
+  }
+
+  .surface-dark a.nav-link:hover {
+    text-decoration-color: var(--color-agua-400);
+  }
+
+  .whatsapp-flutuante {
+    position: fixed;
+    right: 1rem;
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    z-index: 40;
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border: 2px solid var(--color-bege-200);
+    border-radius: var(--radius-md);
+    background: var(--color-petroleo-900);
+    color: var(--color-creme-50);
+    box-shadow: 0 6px 20px rgb(16 49 62 / 0.28);
+  }
+
+  .whatsapp-flutuante:hover {
+    background: var(--color-petroleo-700);
+    color: var(--color-creme-50);
+  }
+}

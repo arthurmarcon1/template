@@ -25,7 +25,30 @@ export const site = {
   whatsapp: {
     exibicao: "(55) 98170-0001",
     digitos: "5555981700001",
+    mensagem:
+      "Olá! Tenho um clube e quero saber como funciona a organização de torneios com a F&M.",
+  },
+
+  /* [CONFIRMAR: logo vetorial] Versao provisoria em PNG 235x235, com o
+     disco creme. Trocar pelo SVG oficial quando o cliente enviar. */
+  logo: {
+    src: "/bola/logo.png",
+    largura: 235,
+    altura: 235,
   },
 
   regiao: "[CONFIRMAR: cidade/região de atuação]",
 } as const;
+
+/* Link unico de WhatsApp: todo botao do site usa este, com a mensagem
+   pre-preenchida. */
+export const whatsappUrl = `https://wa.me/${site.whatsapp.digitos}?text=${encodeURIComponent(site.whatsapp.mensagem)}`;
+
+/* Ancoras da pagina. O id e o mesmo no menu e na secao. */
+export const secoes = [
+  { id: "como-funciona", rotulo: "Como funciona" },
+  { id: "servicos", rotulo: "Serviços" },
+  { id: "diferenciais", rotulo: "Diferenciais" },
+  { id: "torneios", rotulo: "Torneios" },
+  { id: "faq", rotulo: "FAQ" },
+] as const;
