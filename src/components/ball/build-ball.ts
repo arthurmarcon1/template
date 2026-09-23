@@ -73,11 +73,18 @@ function seamRibbon(radius: number, halfWidth: number, segs: number, rows = 6) {
 }
 
 export async function buildBall() {
-  const felt = new THREE.MeshStandardMaterial({
+  // feltro aveludado: o sheen acende as bordas de raspao como pelo de
+  // tecido. Se o brilho na silhueta ficar forte, baixe sheen (0.6 a 0.8)
+  // ou suba sheenRoughness (0.9 a 1); se o halo puxar para o branco,
+  // aproxime sheenColor da cor base (ex. 0xe4ec7a).
+  const felt = new THREE.MeshPhysicalMaterial({
     name: "felt",
     color: 0xd6e23f,
     roughness: 0.98,
     metalness: 0.0,
+    sheen: 1,
+    sheenRoughness: 0.8,
+    sheenColor: 0xf2f7a0,
   });
   const seamCloth = new THREE.MeshStandardMaterial({
     name: "seam",
