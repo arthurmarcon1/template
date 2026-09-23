@@ -11,7 +11,12 @@ import type { ThreeDStage } from "./three-d-stage";
 
 const R = 0.0335; // raio real da bola (m)
 
-const LOGO_URL = "/bola/logo.png";
+/* TODO: trocar pela logo-estampa.png oficial (so o traco em #294B54,
+   fundo transparente) quando o cliente enviar. Esta versao provisoria e
+   gerada a partir de logo.png por scripts/logo-estampa-provisorio.mjs. */
+const LOGO_URL = "/bola/logo-estampa.provisorio.png";
+
+const FELT_ROUGHNESS = 0.98;
 
 // curva de costura classica: latitude oscila duas vezes por volta de azimute
 function seamPoints(radius: number, n: number) {
@@ -80,7 +85,7 @@ export async function buildBall() {
   const felt = new THREE.MeshPhysicalMaterial({
     name: "felt",
     color: 0xd6e23f,
-    roughness: 0.98,
+    roughness: FELT_ROUGHNESS,
     metalness: 0.0,
     sheen: 1,
     sheenRoughness: 0.8,
@@ -116,7 +121,10 @@ export async function buildBall() {
   seamGroove.side = THREE.DoubleSide;
   ball.add(groove);
 
-  // decalque da logo, aplicado como calota esferica sobre o feltro
+  // logo como estampa: tinta impressa no feltro, nao adesivo. Mesma
+  // rugosidade do feltro (nada de brilho de plastico), leve transparencia
+  // para a textura do pano "aparecer" por baixo, e sem escrever no depth
+  // buffer para nao recortar a costura nem piscar sobre o feltro.
   const logoTex = await new THREE.TextureLoader().loadAsync(LOGO_URL);
   logoTex.colorSpace = THREE.SRGBColorSpace;
   logoTex.anisotropy = 8;
@@ -125,15 +133,19 @@ export async function buildBall() {
     name: "logo",
     map: logoTex,
     transparent: true,
-    alphaTest: 0.35,
-    roughness: 0.75,
+    alphaTest: 0.05,
+    opacity: 0.9,
+    roughness: FELT_ROUGHNESS,
     metalness: 0.0,
+    depthWrite: false,
     side: THREE.FrontSide,
   });
 
+  // raio rente: 1.005 fica logo acima do sulco da costura (1.004), sem
+  // flutuar como o 1.014 original e sem piscar contra o feltro.
   const span = 1.3; // abertura angular do decalque (rad)
   const patch = new THREE.SphereGeometry(
-    R * 1.014,
+    R * 1.005,
     72,
     72,
     -span / 2,
