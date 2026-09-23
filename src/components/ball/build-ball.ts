@@ -6,7 +6,23 @@
    Como o stage, este modulo importa three estaticamente: so deve ser
    alcancado por import() dinamico. */
 
-import * as THREE from "three";
+import {
+  BufferGeometry,
+  CatmullRomCurve3,
+  DoubleSide,
+  Float32BufferAttribute,
+  FrontSide,
+  Group,
+  MathUtils,
+  Mesh,
+  MeshPhysicalMaterial,
+  MeshStandardMaterial,
+  Quaternion,
+  SRGBColorSpace,
+  SphereGeometry,
+  TextureLoader,
+  Vector3,
+} from "three";
 import type { ThreeDStage } from "./three-d-stage";
 
 const R = 0.0335; // raio real da bola (m)
@@ -20,7 +36,7 @@ const FELT_ROUGHNESS = 0.98;
 
 // curva de costura classica: latitude oscila duas vezes por volta de azimute
 function seamPoints(radius: number, n: number) {
-  const pts: THREE.Vector3[] = [];
+  const pts: Vector3[] = [];
   const A = 0.82; // amplitude da onda (rad)
   for (let i = 0; i < n; i++) {
     const t = (i / n) * Math.PI * 2;
@@ -28,7 +44,7 @@ function seamPoints(radius: number, n: number) {
     const az = t - 0.22 * Math.sin(4 * t); // arredonda as curvas nos extremos
     const c = Math.cos(lat);
     pts.push(
-      new THREE.Vector3(
+      new Vector3(
         radius * c * Math.cos(az),
         radius * Math.sin(lat),
         radius * c * Math.sin(az),
@@ -41,7 +57,7 @@ function seamPoints(radius: number, n: number) {
 // faixa rente a superficie: varre a curva lateralmente sobre a esfera,
 // sem tubo saliente (nada de "elastico" cruzando a silhueta)
 function seamRibbon(radius: number, halfWidth: number, segs: number, rows = 6) {
-  const curve = new THREE.CatmullRomCurve3(
+  const curve = new CatmullRomCurve3(
     seamPoints(1, 480),
     true,
     "centripetal",
@@ -52,7 +68,7 @@ function seamRibbon(radius: number, halfWidth: number, segs: number, rows = 6) {
     const u = (i % segs) / segs;
     const p = curve.getPoint(u).normalize();
     const t = curve.getTangent(u).normalize();
-    const b = new THREE.Vector3().crossVectors(t, p).normalize();
+    const b = new Vector3().crossVectors(t, p).normalize();
     for (let j = 0; j <= rows; j++) {
       const w = -halfWidth + (2 * halfWidth * j) / rows;
       const v = p
@@ -70,8 +86,8 @@ function seamRibbon(radius: number, halfWidth: number, segs: number, rows = 6) {
       }
     }
   }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute("position", new THREE.Float32BufferAttribute(verts, 3));
+  const g = new BufferGeometry();
+  g.setAttribute("position", new Float32BufferAttribute(verts, 3));
   g.setIndex(idx);
   g.computeVertexNormals();
   return g;
@@ -82,7 +98,7 @@ export async function buildBall() {
   // tecido. Se o brilho na silhueta ficar forte, baixe sheen (0.6 a 0.8)
   // ou suba sheenRoughness (0.9 a 1); se o halo puxar para o branco,
   // aproxime sheenColor da cor base (ex. 0xe4ec7a).
-  const felt = new THREE.MeshPhysicalMaterial({
+  const felt = new MeshPhysicalMaterial({
     name: "felt",
     color: 0xd6e23f,
     roughness: FELT_ROUGHNESS,
@@ -91,45 +107,45 @@ export async function buildBall() {
     sheenRoughness: 0.8,
     sheenColor: 0xf2f7a0,
   });
-  const seamCloth = new THREE.MeshStandardMaterial({
+  const seamCloth = new MeshStandardMaterial({
     name: "seam",
     color: 0xf6f4ee,
     roughness: 0.85,
     metalness: 0.0,
   });
-  const seamGroove = new THREE.MeshStandardMaterial({
+  const seamGroove = new MeshStandardMaterial({
     name: "groove",
     color: 0x8f8a76,
     roughness: 1.0,
     metalness: 0.0,
   });
 
-  const ball = new THREE.Group();
+  const ball = new Group();
   ball.name = "tennis_ball";
 
-  const core = new THREE.Mesh(new THREE.SphereGeometry(R, 128, 96), felt);
+  const core = new Mesh(new SphereGeometry(R, 128, 96), felt);
   core.name = "felt_body";
   ball.add(core);
 
-  const seam = new THREE.Mesh(seamRibbon(R * 1.002, 0.075, 900), seamCloth);
+  const seam = new Mesh(seamRibbon(R * 1.002, 0.075, 900), seamCloth);
   seam.name = "seam_band";
-  seamCloth.side = THREE.DoubleSide;
+  seamCloth.side = DoubleSide;
   ball.add(seam);
 
-  const groove = new THREE.Mesh(seamRibbon(R * 1.004, 0.0065, 900), seamGroove);
+  const groove = new Mesh(seamRibbon(R * 1.004, 0.0065, 900), seamGroove);
   groove.name = "seam_groove";
-  seamGroove.side = THREE.DoubleSide;
+  seamGroove.side = DoubleSide;
   ball.add(groove);
 
   // logo como estampa: tinta impressa no feltro, nao adesivo. Mesma
   // rugosidade do feltro (nada de brilho de plastico), leve transparencia
   // para a textura do pano "aparecer" por baixo, e sem escrever no depth
   // buffer para nao recortar a costura nem piscar sobre o feltro.
-  const logoTex = await new THREE.TextureLoader().loadAsync(LOGO_URL);
-  logoTex.colorSpace = THREE.SRGBColorSpace;
+  const logoTex = await new TextureLoader().loadAsync(LOGO_URL);
+  logoTex.colorSpace = SRGBColorSpace;
   logoTex.anisotropy = 8;
 
-  const logoMat = new THREE.MeshStandardMaterial({
+  const logoMat = new MeshStandardMaterial({
     name: "logo",
     map: logoTex,
     transparent: true,
@@ -138,13 +154,13 @@ export async function buildBall() {
     roughness: FELT_ROUGHNESS,
     metalness: 0.0,
     depthWrite: false,
-    side: THREE.FrontSide,
+    side: FrontSide,
   });
 
   // raio rente: 1.005 fica logo acima do sulco da costura (1.004), sem
   // flutuar como o 1.014 original e sem piscar contra o feltro.
   const span = 1.3; // abertura angular do decalque (rad)
-  const patch = new THREE.SphereGeometry(
+  const patch = new SphereGeometry(
     R * 1.005,
     72,
     72,
@@ -153,7 +169,7 @@ export async function buildBall() {
     Math.PI / 2 - span / 2,
     span,
   );
-  const logo = new THREE.Mesh(patch, logoMat);
+  const logo = new Mesh(patch, logoMat);
   logo.name = "logo_decal";
   logo.castShadow = false;
   ball.add(logo);
@@ -164,41 +180,41 @@ export async function buildBall() {
   // vira a bola: o centro do painel de feltro (o "polo" do desenho da
   // costura) fica de frente para a camera padrao, e um giro extra ajusta
   // as costuras
-  const camDir = new THREE.Vector3(1, 0.55, 1.25).normalize();
-  const faceCam = new THREE.Quaternion().setFromUnitVectors(
-    new THREE.Vector3(0, 1, 0),
+  const camDir = new Vector3(1, 0.55, 1.25).normalize();
+  const faceCam = new Quaternion().setFromUnitVectors(
+    new Vector3(0, 1, 0),
     camDir,
   );
   ball.quaternion.copy(
-    new THREE.Quaternion().setFromAxisAngle(camDir, -0.75).multiply(faceCam),
+    new Quaternion().setFromAxisAngle(camDir, -0.75).multiply(faceCam),
   );
   ball.updateMatrixWorld(true);
 
   // orienta o decalque: normal no polo local, "para cima" alinhado ao
   // topo da tela
-  const localDir = new THREE.Vector3(0, 1, 0);
+  const localDir = new Vector3(0, 1, 0);
   const pos = patch.attributes.position;
-  const baseNormal = new THREE.Vector3();
+  const baseNormal = new Vector3();
   for (let i = 0; i < pos.count; i++) {
-    baseNormal.add(new THREE.Vector3().fromBufferAttribute(pos, i));
+    baseNormal.add(new Vector3().fromBufferAttribute(pos, i));
   }
   baseNormal.normalize();
-  const q1 = new THREE.Quaternion().setFromUnitVectors(baseNormal, localDir);
-  const topRow = new THREE.Vector3()
+  const q1 = new Quaternion().setFromUnitVectors(baseNormal, localDir);
+  const topRow = new Vector3()
     .fromBufferAttribute(pos, 32)
     .normalize()
     .applyQuaternion(q1);
   const curUp = topRow.projectOnPlane(localDir).normalize();
-  const wantUp = new THREE.Vector3(0, 1, 0)
+  const wantUp = new Vector3(0, 1, 0)
     .applyQuaternion(ball.quaternion.clone().invert())
     .projectOnPlane(localDir)
     .normalize();
-  let ang = Math.acos(THREE.MathUtils.clamp(curUp.dot(wantUp), -1, 1));
-  if (new THREE.Vector3().crossVectors(curUp, wantUp).dot(localDir) < 0) {
+  let ang = Math.acos(MathUtils.clamp(curUp.dot(wantUp), -1, 1));
+  if (new Vector3().crossVectors(curUp, wantUp).dot(localDir) < 0) {
     ang = -ang;
   }
   logo.quaternion.copy(
-    new THREE.Quaternion().setFromAxisAngle(localDir, ang).multiply(q1),
+    new Quaternion().setFromAxisAngle(localDir, ang).multiply(q1),
   );
 
   return ball;
@@ -211,7 +227,7 @@ export async function mountBall(stage: ThreeDStage) {
   stage.setObject(ball);
   // sem sombra projetada: a bola flutua limpa sobre o fundo da landing page
   ball.traverse((o) => {
-    if ((o as THREE.Mesh).isMesh) o.castShadow = false;
+    if ((o as Mesh).isMesh) o.castShadow = false;
   });
   return ball;
 }

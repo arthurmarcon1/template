@@ -45,6 +45,6 @@ npx vercel            # preview
 npx vercel --prod     # produção
 ```
 
-A página está com `noindex` ligado de propósito. Ao publicar em produção,
-mudar `robots` em `src/app/layout.tsx` para `index: true, follow: true` e
-preencher `NEXT_PUBLIC_SITE_URL` com o domínio definitivo.
+A página sai com `noindex` por padrão, para o preview não aparecer no
+Google. No deploy de produção, com o domínio definitivo, definir na Vercel
+`INDEXAR=1` e `NEXT_PUBLIC_SITE_URL` (ver `.env.example`).

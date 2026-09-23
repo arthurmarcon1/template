@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
-import { site } from "@/lib/site";
+import { site, whatsappUrl } from "@/lib/site";
 import "./globals.css";
 
 /* Barlow Condensed nos titulos, Barlow no corpo. next/font hospeda os
@@ -30,12 +30,17 @@ const baseUrl =
     ? `https://${process.env.VERCEL_URL}`
     : "http://localhost:3000");
 
-const TITULO = `${site.nome} | Torneios de padel e beach tennis`;
+const indexar = process.env.INDEXAR === "1";
+
+const TITULO =
+  "F&M Eventos Esportivos | Organização de torneios de Padel e Beach Tennis";
+const DESCRICAO =
+  "A F&M organiza o torneio de Padel e Beach Tennis do seu clube: inscrições, chaveamento no Gripo, mesa, divulgação e premiação. Seu clube só abre as quadras.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: TITULO,
-  description: site.descricao,
+  description: DESCRICAO,
   applicationName: site.nome,
   alternates: { canonical: "/" },
   openGraph: {
@@ -44,18 +49,18 @@ export const metadata: Metadata = {
     url: "/",
     siteName: site.nome,
     title: TITULO,
-    description: site.descricao,
+    description: DESCRICAO,
   },
   twitter: {
     card: "summary_large_image",
     title: TITULO,
-    description: site.descricao,
+    description: DESCRICAO,
   },
-  /* Preview NAO deve ser indexado. Trocar para index/follow apenas no
-     deploy de producao, com dominio definitivo. */
+  /* Preview NAO deve ser indexado. So o deploy de producao, com dominio
+     definitivo, liga INDEXAR=1 (variavel de ambiente de build). */
   robots: {
-    index: false,
-    follow: false,
+    index: indexar,
+    follow: indexar,
   },
 };
 
@@ -84,18 +89,28 @@ export default function RootLayout({
   );
 }
 
-/* JSON-LD: a empresa como SportsOrganization. Os eventos (SportsEvent)
-   entram quando houver calendario real de torneios. */
+/* JSON-LD: Organization com os contatos. Ficam de fora, de proposito,
+   dados ainda nao confirmados (regiao atendida, endereco): entram quando
+   o [CONFIRMAR] correspondente for resolvido. O telefone tambem e
+   [CONFIRMAR], mas ja e o que o site inteiro usa. */
 function JsonLd() {
   const organizacao = {
     "@context": "https://schema.org",
-    "@type": "SportsOrganization",
+    "@type": "Organization",
     "@id": `${baseUrl}/#organizacao`,
     name: site.nome,
-    description: site.descricao,
+    description: DESCRICAO,
     url: baseUrl,
-    telephone: `+${site.whatsapp.digitos}`,
-    sport: site.modalidades,
+    logo: `${baseUrl}${site.logo.src}`,
+    slogan: site.assinatura.join(" · "),
+    knowsAbout: ["Torneios de Padel", "Torneios de Beach Tennis"],
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "customer service",
+      telephone: `+${site.whatsapp.digitos}`,
+      url: whatsappUrl,
+      availableLanguage: "pt-BR",
+    },
     sameAs: [site.instagram.url],
   };
 

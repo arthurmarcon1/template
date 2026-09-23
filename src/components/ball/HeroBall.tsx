@@ -7,10 +7,15 @@ import { useEffect, useRef, useState } from "react";
    1. Renderiza ball-static.webp no lugar e no tamanho finais. E o mesmo
       quadro que o modo hero desenha no instante zero (Tarefa 7), entao a
       troca pelo 3D nao tem salto de layout nem de imagem.
-   2. Depois que a pagina termina de carregar e o navegador fica ocioso,
-      importa o three.js (chunk separado, fora do bundle inicial), monta
-      <three-d-stage hero autorotate> por cima da imagem e faz a troca
-      com um fade quando a bola ja esta desenhada.
+   2. Depois que a pagina carrega, na primeira interacao do visitante
+      (mouse, toque, rolagem, roda ou teclado), importa o three.js (chunk
+      separado, fora do bundle inicial), monta <three-d-stage hero
+      autorotate> por cima da imagem e faz a troca com um fade quando a
+      bola ja esta desenhada. Esperar a interacao tira o parse do
+      three.js (~770 KB) da janela de carregamento: num Android
+      intermediario isso sao segundos de thread principal ocupada bem na
+      hora em que a pagina precisa responder. Como a imagem e o mesmo
+      quadro do 3D, ate la ninguem ve diferenca.
    3. Nao carrega o three.js com prefers-reduced-motion, com economia de
       dados ligada ou sem WebGL: fica so a imagem.
 
@@ -34,12 +39,16 @@ export default function HeroBall({
     const conexao = (navigator as Navigator & {
       connection?: { saveData?: boolean };
     }).connection;
-    if (reduzir.matches || conexao?.saveData || !temWebGL()) return;
+    if (reduzir.matches || conexao?.saveData) return;
 
     let cancelado = false;
     let stage: HTMLElement | null = null;
 
     const iniciar = async () => {
+      // Criar um contexto WebGL so para testar custa caro (em alguns
+      // aparelhos, centenas de ms). Por isso o teste fica aqui, depois da
+      // interacao, e nao no efeito que roda na hidratacao.
+      if (!temWebGL()) return;
       const [{ defineThreeDStage }, { mountBall }] = await Promise.all([
         import("./three-d-stage"),
         import("./build-ball"),
@@ -62,19 +71,35 @@ export default function HeroBall({
       });
     };
 
-    // so depois do conteudo principal: load + ocioso
-    let idle = 0;
-    const agendar = () => {
-      const ric = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 200));
-      idle = ric(() => void iniciar().catch(() => {})) as number;
+    // primeira interacao depois do load. Listeners passivos e de uso
+    // unico: disparam uma vez e saem (nao e um handler de scroll por
+    // quadro).
+    const gatilhos = [
+      "pointermove",
+      "pointerdown",
+      "touchstart",
+      "wheel",
+      "scroll",
+      "keydown",
+    ] as const;
+    let disparado = false;
+    const disparar = () => {
+      if (disparado) return;
+      disparado = true;
+      gatilhos.forEach((g) => window.removeEventListener(g, disparar));
+      void iniciar().catch(() => {});
     };
-    if (document.readyState === "complete") agendar();
-    else window.addEventListener("load", agendar, { once: true });
+    const armar = () =>
+      gatilhos.forEach((g) =>
+        window.addEventListener(g, disparar, { passive: true, once: true }),
+      );
+    if (document.readyState === "complete") armar();
+    else window.addEventListener("load", armar, { once: true });
 
     return () => {
       cancelado = true;
-      window.removeEventListener("load", agendar);
-      window.cancelIdleCallback?.(idle);
+      window.removeEventListener("load", armar);
+      gatilhos.forEach((g) => window.removeEventListener(g, disparar));
       stage?.remove();
     };
   }, []);
