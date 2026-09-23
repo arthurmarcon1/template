@@ -38,6 +38,15 @@ export default function BallViewer() {
     });
   }, [pronto]);
 
+  function exportar() {
+    const stage = ref.current as import("./three-d-stage").ThreeDStage | null;
+    if (!stage) return;
+    const a = document.createElement("a");
+    a.href = stage.snapshot(1200);
+    a.download = "ball-static.png";
+    a.click();
+  }
+
   if (!pronto) return null;
 
   if (hero) {
@@ -46,6 +55,15 @@ export default function BallViewer() {
         <div className="size-[min(90vw,90vh)]">
           <three-d-stage ref={ref} hero autorotate />
         </div>
+        {/* Regenera a imagem estatica do hero. Depois de baixar, mover
+            para public/bola/ e rodar: node scripts/ball-static.mjs */}
+        <button
+          type="button"
+          className="btn btn-secondary fixed right-4 bottom-4 border-creme-50 text-creme-50"
+          onClick={exportar}
+        >
+          Exportar ball-static.png
+        </button>
       </div>
     );
   }

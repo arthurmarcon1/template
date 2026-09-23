@@ -30,7 +30,13 @@ public/fotos/                  fotos reais dos torneios
 
 **Rotas de trabalho.** `/tokens` mostra cores, tipografia e botões (só em
 desenvolvimento). `/bola` é o visualizador da bola com orbit livre e
-exportação OBJ/GLB (fora do índice de busca).
+exportação OBJ/GLB (fora do índice de busca). `/bola?modo=hero` mostra o
+modo hero sobre o fundo da página.
+
+**Imagem estática da bola.** O hero mostra `public/bola/ball-static.webp`
+enquanto o three.js carrega (e no lugar dele com movimento reduzido). Se a
+bola mudar: abrir `/bola?modo=hero`, clicar em "Exportar ball-static.png",
+salvar em `public/bola/` e rodar `node scripts/ball-static.mjs`.
 
 ## Deploy na Vercel
 
