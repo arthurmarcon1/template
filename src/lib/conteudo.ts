@@ -93,3 +93,35 @@ export const servicos = {
     { titulo: "Cobertura", texto: "[CONFIRMAR: foto e vídeo]" },
   ],
 };
+
+export const diferenciais = {
+  titulo: "Por que a F&M",
+  pilares: [
+    {
+      titulo: "Organização",
+      texto:
+        "Seu clube não precisa destacar ninguém da equipe. A F&M chega com processo pronto e cumpre o cronograma.",
+    },
+    {
+      titulo: "Competição",
+      texto:
+        "Categorias bem montadas, jogos equilibrados e chaveamento transparente no Gripo.",
+    },
+    {
+      titulo: "Experiência",
+      texto:
+        "Atleta bem recebido, evento com cara profissional e divulgação que valoriza o seu clube.",
+    },
+  ],
+
+  /* Faixa de numeros. So aparece com exibir: true E todos os valores
+     preenchidos. Enquanto os numeros reais nao chegarem, fica oculta. */
+  numeros: {
+    exibir: false,
+    itens: [
+      { valor: "", rotulo: "torneios realizados" }, // [CONFIRMAR: torneios realizados]
+      { valor: "", rotulo: "atletas" }, // [CONFIRMAR: atletas]
+      { valor: "", rotulo: "clubes parceiros" }, // [CONFIRMAR: clubes parceiros]
+    ],
+  },
+};
