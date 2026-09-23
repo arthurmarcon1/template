@@ -4,6 +4,7 @@ import WhatsappFlutuante from "@/components/layout/WhatsappFlutuante";
 import Hero from "@/components/sections/Hero";
 import Problema from "@/components/sections/Problema";
 import ComoFunciona from "@/components/sections/ComoFunciona";
+import Servicos from "@/components/sections/Servicos";
 
 /* Landing da F&M. As secoes entram em src/components/sections/, na
    ordem do docs/LANDING_FM.md. O main desconta a altura do header fixo. */
@@ -18,6 +19,7 @@ export default function Page() {
         <Hero />
         <Problema />
         <ComoFunciona />
+        <Servicos />
       </main>
       <Footer />
       <WhatsappFlutuante />

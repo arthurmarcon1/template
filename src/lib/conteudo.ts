@@ -64,3 +64,32 @@ export const comoFunciona = {
     },
   ],
 };
+
+export const servicos = {
+  titulo: "O que entregamos",
+  itens: [
+    {
+      titulo: "Inscrições",
+      texto: "Recebemos, confirmamos e organizamos todos os inscritos.",
+    },
+    {
+      titulo: "Chaveamento no Gripo",
+      texto:
+        "Chaves, horários e resultados online, em tempo real, para atletas e público.",
+    },
+    { titulo: "Mesa e arbitragem", texto: "[CONFIRMAR: escopo]" },
+    {
+      titulo: "Divulgação",
+      texto: "Artes e posts prontos para o Instagram do clube.",
+    },
+    {
+      titulo: "Premiação",
+      texto: "[CONFIRMAR: troféus, medalhas, brindes]",
+    },
+    {
+      titulo: "Patrocínios",
+      texto: "[CONFIRMAR: se a F&M capta ou só expõe patrocinadores]",
+    },
+    { titulo: "Cobertura", texto: "[CONFIRMAR: foto e vídeo]" },
+  ],
+};
