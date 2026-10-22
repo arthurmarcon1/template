@@ -19,7 +19,7 @@ export default function Planos() {
   return (
     <section id="planos" aria-labelledby="planos-titulo" className="section">
       <div className="container-content">
-        <h2 id="planos-titulo" className="max-w-[20ch] text-h2 text-petroleo-700">
+        <h2 id="planos-titulo" className="revelar max-w-[20ch] text-h2 text-petroleo-700">
           {planos.titulo}
         </h2>
 
@@ -27,7 +27,7 @@ export default function Planos() {
           {planos.itens.map((p) => (
             <li
               key={p.nome}
-              className="flex flex-col rounded-md border-2 border-bege-200 p-6 md:p-8"
+              className="revelar flex flex-col rounded-md border-2 border-bege-200 p-6 transition-colors duration-200 hover:border-agua-600 md:p-8"
             >
               <p className="eyebrow self-start rounded-sm bg-bege-200 px-2.5 py-1 text-petroleo-900">
                 {p.selo}

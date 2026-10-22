@@ -1,6 +1,8 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsappFlutuante from "@/components/layout/WhatsappFlutuante";
+import BolaScroll from "@/components/efeitos/BolaScroll";
+import Quique from "@/components/efeitos/Quique";
 import Hero from "@/components/sections/Hero";
 import Problema from "@/components/sections/Problema";
 import Numeros from "@/components/sections/Numeros";
@@ -41,6 +43,8 @@ export default function Page() {
       </main>
       <Footer />
       <WhatsappFlutuante />
+      <BolaScroll />
+      <Quique />
     </>
   );
 }

@@ -12,13 +12,13 @@ export default function Modalidades() {
       className="section border-t-2 border-bege-200"
     >
       <div className="container-content">
-        <h2 id="modalidades-titulo" className="text-h2 text-petroleo-700">
+        <h2 id="modalidades-titulo" className="revelar text-h2 text-petroleo-700">
           {modalidades.titulo}
         </h2>
 
         <div className="mt-12 grid gap-14 md:mt-16 md:grid-cols-2 md:gap-10 lg:gap-16">
           {modalidades.itens.map((m, i) => (
-            <article key={m.nome} className={i === 1 ? "md:mt-20" : ""}>
+            <article key={m.nome} className={`revelar ${i === 1 ? "md:mt-20" : ""}`}>
               <Foto
                 src={m.foto.src}
                 alt={m.foto.alt}

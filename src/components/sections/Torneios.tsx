@@ -21,7 +21,7 @@ export default function Torneios() {
       className="section surface-dark"
     >
       <div className="container-content">
-        <h2 id="torneios-titulo" className="text-h2">
+        <h2 id="torneios-titulo" className="revelar text-h2">
           {torneios.titulo}
         </h2>
 
@@ -36,13 +36,13 @@ export default function Torneios() {
             return (
               <li
                 key={f.src}
-                className={
+                className={`revelar ${
                   destaque
                     ? "col-span-2 md:row-span-2"
                     : largo
                       ? "col-span-2"
                       : ""
-                }
+                }`}
               >
                 <figure className="h-full">
                   <Foto
@@ -76,10 +76,10 @@ export default function Torneios() {
         </a>
 
         <div className="mt-20 border-t border-petroleo-700 pt-16 md:mt-28">
-          <h3 className="text-h2">{equipe.titulo}</h3>
+          <h3 className="revelar text-h2">{equipe.titulo}</h3>
           <ul className="mt-10 grid max-w-[42rem] gap-10 sm:grid-cols-2 sm:gap-8">
             {equipe.pessoas.map((p) => (
-              <li key={p.instagram.handle}>
+              <li key={p.instagram.handle} className="revelar">
                 <Foto
                   src={p.foto.src}
                   alt={p.foto.alt}

@@ -3,7 +3,8 @@ import { ctaFinal } from "@/lib/conteudo";
 import { whatsappUrl } from "@/lib/site";
 
 /* CTA final em petroleo-900 com a bola estatica menor. So a imagem: o
-   three.js fica restrito ao hero. Mobile: bola acima, centralizada. */
+   three.js fica restrito ao hero. Mobile: bola acima, centralizada.
+   A bola quica em loop (.bola-quicando, some com movimento reduzido). */
 
 export default function CtaFinal() {
   return (
@@ -21,10 +22,10 @@ export default function CtaFinal() {
           alt=""
           loading="lazy"
           decoding="async"
-          className="mx-auto w-40 md:w-56 lg:w-64"
+          className="bola-quicando mx-auto w-40 md:w-56 lg:w-64"
         />
         <div>
-          <h2 id="cta-titulo" className="max-w-[16ch] text-h1">
+          <h2 id="cta-titulo" className="revelar max-w-[16ch] text-h1">
             {ctaFinal.titulo}
           </h2>
           <a

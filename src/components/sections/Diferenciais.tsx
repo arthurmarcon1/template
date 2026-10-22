@@ -12,7 +12,7 @@ export default function Diferenciais() {
       className="section border-t-2 border-bege-200"
     >
       <div className="container-content">
-        <h2 id="diferenciais-titulo" className="text-h2 text-petroleo-700">
+        <h2 id="diferenciais-titulo" className="revelar text-h2 text-petroleo-700">
           {diferenciais.titulo}
         </h2>
 
@@ -22,10 +22,10 @@ export default function Diferenciais() {
               key={p.titulo}
               className="grid gap-3 border-t-2 border-bege-200 py-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:items-center md:gap-12 md:py-10"
             >
-              <h3 className="font-display text-[clamp(2.75rem,7vw,5.5rem)] leading-[0.9] font-extrabold text-petroleo-700 uppercase">
+              <h3 className="revelar-lado font-display text-[clamp(2.75rem,7vw,5.5rem)] leading-[0.9] font-extrabold text-petroleo-700 uppercase">
                 {p.titulo}
               </h3>
-              <p className="max-w-[44ch] text-lead">{p.texto}</p>
+              <p className="revelar max-w-[44ch] text-lead">{p.texto}</p>
             </div>
           ))}
         </div>

@@ -22,14 +22,14 @@ export default function Depoimentos() {
       className="section border-b-2 border-bege-200"
     >
       <div className="container-content">
-        <h2 id="depoimentos-titulo" className="text-h2 text-petroleo-700">
+        <h2 id="depoimentos-titulo" className="revelar text-h2 text-petroleo-700">
           {depoimentosSecao.titulo}
         </h2>
         <ul className={`mx-auto mt-12 grid gap-6 md:mt-16 lg:gap-8 ${colunas[lista.length]}`}>
           {lista.map((d) => (
             <li
               key={d.nome}
-              className="rounded-md border-2 border-bege-200 p-6 md:p-8"
+              className="revelar rounded-md border-2 border-bege-200 p-6 md:p-8"
             >
               <figure className="flex h-full flex-col">
                 <blockquote className="text-lead text-petroleo-900">

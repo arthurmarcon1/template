@@ -326,3 +326,252 @@
     background: color-mix(in srgb, currentColor 6%, transparent);
   }
 }
+
+/* ==========================================================================
+   Movimento
+   Tudo aqui e decorativo e some com prefers-reduced-motion. Nada depende
+   de JS para o conteudo aparecer: sem suporte, a pagina fica estatica.
+   ========================================================================== */
+
+/* ---- Letreiro dos clubes ------------------------------------------------ */
+@layer components {
+  .marquee {
+    display: flex;
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .marquee-trilho {
+    display: flex;
+    flex-shrink: 0;
+    width: max-content;
+    animation: marquee 45s linear infinite;
+  }
+
+  .marquee-reverso {
+    animation-direction: reverse;
+    animation-duration: 55s;
+  }
+
+  .marquee:hover .marquee-trilho {
+    animation-play-state: paused;
+  }
+
+  .texto-vazado {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--color-agua-600);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee {
+      mask-image: none;
+      max-width: calc(var(--container-content) + 2 * var(--gutter));
+      margin-inline: auto;
+      padding-inline: var(--gutter);
+    }
+    .marquee-trilho {
+      flex-wrap: wrap;
+      flex-shrink: 1;
+      width: auto;
+      min-width: 0;
+      row-gap: 0.5rem;
+      animation: none;
+    }
+    /* !important: o li usa o utilitario flex, que vence a camada
+       components. */
+    .marquee-trilho > [data-dup],
+    .marquee-extra {
+      display: none !important;
+    }
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---- Bola que desce com a rolagem (BolaScroll.tsx) ---------------------- */
+@layer components {
+  .bola-scroll {
+    --p: 0;
+    --bola: 2.5rem;
+    --topo: calc(var(--header-h) + 1.25rem);
+    --curso: calc(100dvh - var(--topo) - 1.25rem - var(--bola));
+    display: none;
+    position: fixed;
+    top: var(--topo);
+    /* centro da margem livre a direita do container */
+    right: max(0.25rem, calc((100vw - var(--container-content) - 2 * var(--gutter)) / 4 - var(--bola) / 2));
+    z-index: 30;
+    width: var(--bola);
+    height: calc(var(--curso) + var(--bola));
+    pointer-events: none;
+    opacity: clamp(0, calc(var(--p) * 30), 1);
+  }
+
+  @media (min-width: 80rem) and (prefers-reduced-motion: no-preference) {
+    .bola-scroll {
+      display: block;
+    }
+  }
+
+  /* Trilho: linha fina, preenchida em agua ate onde a bola ja passou. */
+  .bola-scroll-trilho {
+    position: absolute;
+    left: calc(50% - 1px);
+    top: calc(var(--bola) / 2);
+    width: 2px;
+    height: var(--curso);
+    background: linear-gradient(
+      var(--color-agua-400) calc(var(--p) * 100%),
+      color-mix(in srgb, var(--color-neutro-400) 30%, transparent) 0
+    );
+    border-radius: 1px;
+  }
+
+  .bola-scroll-bola {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--bola);
+    height: var(--bola);
+    translate: 0 calc(var(--p) * var(--curso));
+    rotate: calc(var(--p) * 1440deg);
+  }
+
+  .bola-scroll[data-quique] .bola-scroll-bola {
+    animation: quique-parada 520ms cubic-bezier(0.3, 0, 0.3, 1);
+  }
+}
+
+/* transform separado de translate/rotate: o quique soma ao trajeto. */
+@keyframes quique-parada {
+  0%, 100% { transform: none; }
+  30% { transform: translateY(-0.6rem); }
+  55% { transform: scale(1.12, 0.86); }
+  75% { transform: translateY(-0.2rem); }
+}
+
+/* ---- Cursor de bola ----------------------------------------------------- */
+/* Fora de @layer de proposito: precisa vencer cursor-pointer e os
+   estilos do navegador para links. So com mouse. */
+@media (hover: hover) and (pointer: fine) {
+  html {
+    cursor: url("/cursor/bola.svg") 14 14, auto;
+  }
+
+  a,
+  button,
+  summary,
+  label,
+  [role="button"] {
+    cursor: url("/cursor/bola-ativa.svg") 16 16, pointer;
+  }
+}
+
+/* ---- Marca de quique no clique (Quique.tsx) ---------------------------- */
+.quique {
+  position: fixed;
+  z-index: 60;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: -1.25rem 0 0 -1.25rem;
+  border: 2px solid var(--color-bola-400);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: quique-anel 480ms ease-out forwards;
+}
+
+@keyframes quique-anel {
+  from {
+    opacity: 0.9;
+    transform: scale(0.3);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+/* ---- Bola quicando no CTA final ---------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  .bola-quicando {
+    animation: bola-quicando 1.6s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    transform-origin: 50% 100%;
+  }
+}
+
+@keyframes bola-quicando {
+  0%, 100% { transform: translateY(0) scale(1.06, 0.94); }
+  12% { transform: translateY(-4%) scale(0.97, 1.03); }
+  50% { transform: translateY(-14%) scale(1); }
+  88% { transform: translateY(-4%) scale(0.97, 1.03); }
+}
+
+/* ---- Revelar ao rolar --------------------------------------------------- */
+/* Animacoes ligadas a rolagem (animation-timeline: view()), sem JS. Sem
+   suporte no navegador, o conteudo ja esta no lugar. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .revelar,
+    .revelar-lado {
+      animation: revelar linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 75%;
+    }
+
+    .revelar-lado {
+      animation-name: revelar-lado;
+    }
+
+    /* Linha do tempo do "Como funciona" se preenche em agua ao rolar. */
+    .linha-tempo::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -2px;
+      width: 2px;
+      height: 100%;
+      background: var(--color-agua-600);
+      transform-origin: top;
+      animation: linha-y linear both;
+      animation-timeline: view();
+      animation-range: entry 40% cover 55%;
+    }
+
+    @media (min-width: 64rem) {
+      .linha-tempo::before {
+        top: -2px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        transform-origin: left;
+        animation-name: linha-x;
+      }
+    }
+  }
+}
+
+@keyframes revelar {
+  from {
+    opacity: 0;
+    transform: translateY(2.5rem);
+  }
+}
+
+@keyframes revelar-lado {
+  from {
+    opacity: 0;
+    transform: translateX(-3rem);
+  }
+}
+
+@keyframes linha-y {
+  from { transform: scaleY(0); }
+}
+
+@keyframes linha-x {
+  from { transform: scaleX(0); }
+}
