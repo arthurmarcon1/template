@@ -4,58 +4,31 @@
 
 Tudo abaixo aparece hoje no site como `[CONFIRMAR]` ou como espaço reservado. Os textos ficam em `src/lib/conteudo.ts`, e os dados de contato e marca em `src/lib/site.ts`.
 
-### Marca e contato (valem para o site inteiro)
-- [ ] **WhatsApp (55) 98170-0001**: confirmar se é o número certo para os clubes falarem com a F&M. Ele aparece em todos os botões e no rodapé.
-- [ ] **Logo vetorial (SVG ou PDF)**: hoje o site usa um PNG de 235×235 no cabeçalho e no rodapé.
-- [ ] **Versão da logo só com o traço** (`logo-estampa.png`, em `#294B54`, fundo transparente, sem o disco creme): hoje a bola usa uma versão provisória, recortada automaticamente do PNG. A raquete e a bolinha da logo original ficaram de fora do recorte.
-- [ ] **Ícone da aba (favicon)**: hoje é provisório, só as letras "F&M" em Barlow Condensed. Refazer a partir da logo vetorial.
-- [ ] **Cidade ou região de atuação**: aparece no rodapé.
+Briefing preenchido por João Maneck em 13/10/2026 (ver `fm-ajustes-briefing.md`).
 
-### Como funciona
-- [ ] Conversa: com quanto tempo de antecedência e por qual canal.
-- [ ] Planejamento: o que o clube aprova antes de abrir as inscrições.
-- [ ] Dia do torneio: tamanho da equipe no dia.
-- [ ] Pós-evento: prazo de entrega das fotos.
-- [ ] Confirmar se as quatro etapas descrevem o processo real da F&M.
+### Bloqueia a publicação
+- [ ] **Depoimentos de clubes**: de 1 a 3, com texto, nome, cargo, clube e **autorização para publicar**. Entram em `src/data/depoimentos.ts`; com a lista vazia, a seção fica oculta.
+- [ ] **Resposta: "Como funciona o chaveamento no Grippo?"**: ficou em branco. Enquanto a resposta em `conteudo.ts` estiver vazia, a pergunta não aparece no FAQ.
+- [ ] **Fotos**: ver a lista abaixo.
+- [ ] **Logo vetorial (SVG ou PDF)**: hoje o site usa um PNG de 235×235. Também a versão só com o traço (`logo-estampa.png`) e o favicon.
+- [ ] **CNPJ e razão social**: aparecem no rodapé (`site.empresa`).
+- [ ] **Domínio**: registrar e preencher `site.dominio` (ou `NEXT_PUBLIC_SITE_URL`).
 
-### O que entregamos
-- [ ] Mesa e arbitragem: escopo.
-- [ ] Premiação: troféus, medalhas ou brindes? Quem providencia?
-- [ ] Patrocínios: a F&M capta patrocinadores ou só expõe os que o clube já tem?
-- [ ] Cobertura: tem foto? Tem vídeo?
+### Confirmar com a F&M
+- [ ] **WhatsApp (55) 98170-0001**: foi escrito como "5598170-0001" e termina em 0001. Testar o link num celular real.
+- [ ] **Nome completo do Eduardo**: o briefing diz "Eduardo Ivan", a versão anterior da página dizia "Eduardo Friedrich".
+- [ ] **Preços públicos**: autorização para publicar R$ 1.000 e R$ 2.000. Hoje `exibirPrecos` está desligado em `src/data/config.ts` (planos mostram "Sob orçamento").
+- [ ] **Mesa e arbitragem**: "mesa, tomada próxima e caixa de som" é o que a F&M leva ou o que o clube precisa ter?
+- [ ] **Plano presencial**: quem opera a mesa no dia, a F&M ou a equipe do clube?
+- [ ] **Divulgação / artes para o Instagram**: está na página como entrega, mas não foi confirmado no briefing.
+- [ ] **Antecedência mínima**: o FAQ diz "antes de abrir as inscrições". Confirmar.
+- [ ] Como funciona, passos 1 e 2: canal da conversa e o que o clube aprova antes de abrir as inscrições.
+- [ ] Categorias oferecidas no Padel e no Beach Tennis, e as frases das duas modalidades.
+- [ ] Uma linha sobre o Eduardo e uma sobre o João.
+- [ ] Legenda (torneio, clube e data) e descrição da cena de cada foto da galeria.
 
-### Diferenciais (faixa de números)
-- [ ] Quantos torneios já foram realizados.
-- [ ] Quantos atletas participaram.
-- [ ] Quantos clubes são parceiros.
-
-A faixa só aparece no site com os três números preenchidos e o flag `diferenciais.numeros.exibir` ligado.
-
-### Modalidades
-- [ ] Categorias oferecidas no Padel.
-- [ ] Categorias oferecidas no Beach Tennis.
-- [ ] Validar as frases das duas modalidades ("Torneios de duplas na quadra/areia do seu clube, com categorias por nível"). Elas foram escritas para o site e não vieram da F&M.
-
-### Torneios realizados
-- [ ] De 6 a 8 fotos reais de torneios, cada uma com **nome do torneio, clube e data**.
-- [ ] Uma descrição curta da cena de cada foto, que vira o texto alternativo para leitores de tela.
-
-### Quem organiza
-- [ ] Nome completo do Eduardo Friedrich.
-- [ ] Uma linha sobre o Eduardo e uma sobre o João Maneck.
-- [ ] Retrato de cada um, vertical (proporção 4:5).
-
-### Depoimentos
-- [ ] Até 3 depoimentos de clubes, cada um com texto, nome da pessoa, clube e cidade, e **autorização para publicar**. Enquanto não houver nenhum, o bloco fica escondido.
-
-### Perguntas frequentes (as 7 respostas)
-- [ ] Quanto custa? Como é cobrado?
-- [ ] Com quanto tempo de antecedência preciso marcar?
-- [ ] Quantas quadras preciso ter?
-- [ ] Vocês atendem quais cidades?
-- [ ] O clube precisa fornecer algo além das quadras?
-- [ ] Como funciona o chaveamento no Gripo?
-- [ ] Dá para fazer torneio só de Padel, só de Beach Tennis ou misto?
+### Decisão de posicionamento (opcional)
+- [ ] Testar o headline "Seu clube abre as quadras. O resto é com a gente." ou usar a frase como subtítulo. Hoje o hero segue com "Seu clube, grandes torneios. Zero estresse."
 
 ### Fotos a enviar (lista completa)
 
@@ -103,5 +76,5 @@ Colocar em `public/fotos/`, em WebP. Cada foto entra sozinha no site no próximo
 - [ ] Safari no iPhone: bola, fontes e menu.
 
 ### Ao publicar em produção
-- [ ] Na Vercel, definir `NEXT_PUBLIC_SITE_URL` com o domínio definitivo e `INDEXAR=1`. Sem essas duas variáveis, o site sai com `noindex`.
+- [ ] Ligar o domínio definitivo no projeto da Vercel (ou preencher `site.dominio`) e conferir o `<link rel="canonical">`. A página já é indexada; só o preview sai com `noindex`.
 - [ ] Depois do deploy, rodar o Lighthouse mobile de novo no domínio real.

@@ -22,20 +22,27 @@ const barlow = Barlow({
   display: "swap",
 });
 
-/* Em preview da Vercel a URL muda a cada deploy. VERCEL_URL e injetada
-   automaticamente pela plataforma. O fallback so vale em desenvolvimento. */
+/* URL canonica, em ordem: dominio definitivo (site.dominio ou
+   NEXT_PUBLIC_SITE_URL); dominio de producao do projeto na Vercel
+   (VERCEL_PROJECT_PRODUCTION_URL, o mesmo em todo deploy, e vira o
+   dominio proprio assim que ele for ligado no projeto); URL do deploy
+   (VERCEL_URL, muda a cada deploy); localhost em desenvolvimento.
+   [CONFIRMAR: dominio definitivo] */
+const vercel =
+  process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
 const baseUrl =
+  site.dominio ||
   process.env.NEXT_PUBLIC_SITE_URL ||
-  (process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000");
+  (vercel ? `https://${vercel}` : "http://localhost:3000");
 
-const indexar = process.env.INDEXAR === "1";
+/* A pagina e indexada. So o preview da Vercel fica de fora, para a URL
+   temporaria nao concorrer com o dominio no Google. */
+const preview = process.env.VERCEL_ENV === "preview";
 
 const TITULO =
   "F&M Eventos Esportivos | Organização de torneios de Padel e Beach Tennis";
 const DESCRICAO =
-  "A F&M organiza o torneio de Padel e Beach Tennis do seu clube: inscrições, chaveamento no Gripo, mesa, divulgação e premiação. Seu clube só abre as quadras.";
+  "A F&M organiza o torneio de Padel e Beach Tennis do seu clube em Santa Maria e região: inscrições, chaveamento, cronograma e atendimento aos atletas. Seu clube só abre as quadras.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -56,12 +63,7 @@ export const metadata: Metadata = {
     title: TITULO,
     description: DESCRICAO,
   },
-  /* Preview NAO deve ser indexado. So o deploy de producao, com dominio
-     definitivo, liga INDEXAR=1 (variavel de ambiente de build). */
-  robots: {
-    index: indexar,
-    follow: indexar,
-  },
+  ...(preview && { robots: { index: false, follow: false } }),
 };
 
 export const viewport: Viewport = {
@@ -89,21 +91,37 @@ export default function RootLayout({
   );
 }
 
-/* JSON-LD: Organization com os contatos. Ficam de fora, de proposito,
-   dados ainda nao confirmados (regiao atendida, endereco): entram quando
-   o [CONFIRMAR] correspondente for resolvido. O telefone tambem e
+/* JSON-LD: LocalBusiness com contato e area atendida. Sem endereco de
+   rua: a F&M vai ate o clube, entao so cidade e estado. O telefone e
    [CONFIRMAR], mas ja e o que o site inteiro usa. */
 function JsonLd() {
-  const organizacao = {
+  const empresa = {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "@id": `${baseUrl}/#organizacao`,
+    "@type": "LocalBusiness",
+    "@id": `${baseUrl}/#empresa`,
     name: site.nome,
     description: DESCRICAO,
     url: baseUrl,
+    telephone: `+${site.whatsapp.digitos}`,
     logo: `${baseUrl}${site.logo.src}`,
+    image: `${baseUrl}${site.logo.src}`,
     slogan: site.assinatura.join(" · "),
     knowsAbout: ["Torneios de Padel", "Torneios de Beach Tennis"],
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: site.cidade,
+      addressRegion: site.uf,
+      addressCountry: "BR",
+    },
+    areaServed: {
+      "@type": "City",
+      name: site.cidade,
+      containedInPlace: {
+        "@type": "State",
+        name: site.uf,
+        containedInPlace: { "@type": "Country", name: "BR" },
+      },
+    },
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer service",
@@ -117,7 +135,7 @@ function JsonLd() {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(organizacao) }}
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(empresa) }}
     />
   );
 }

@@ -35,9 +35,11 @@ export default function ComoFunciona() {
                 {passo.titulo}
               </h3>
               <p className="mt-3 max-w-[32ch]">{passo.texto}</p>
-              <p className="mt-3 max-w-[32ch] text-small text-petroleo-500">
-                {passo.detalhe}
-              </p>
+              {passo.detalhe && (
+                <p className="mt-3 max-w-[32ch] text-small text-petroleo-500">
+                  {passo.detalhe}
+                </p>
+              )}
             </li>
           ))}
         </ol>

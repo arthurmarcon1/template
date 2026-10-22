@@ -182,8 +182,8 @@ export default function TokensPage() {
                 Lead · Barlow 400 · <code>text-lead</code>
               </p>
               <p className="mt-1 max-w-text text-lead">
-                A F&amp;M organiza o torneio inteiro, das inscrições à
-                premiação. Seu clube só abre as quadras.
+                A F&amp;M organiza o torneio inteiro, das inscrições aos
+                resultados. Seu clube só abre as quadras.
               </p>
             </div>
             <div>
@@ -229,7 +229,7 @@ export default function TokensPage() {
             <span className="text-agua-400">Zero estresse.</span>
           </h2>
           <p className="mt-6 max-w-text text-lead">
-            A F&amp;M organiza o torneio inteiro, das inscrições à premiação.
+            A F&amp;M organiza o torneio inteiro, das inscrições aos resultados.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <a className="btn btn-primary" href="#">

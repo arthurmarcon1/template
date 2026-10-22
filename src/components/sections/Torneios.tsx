@@ -1,9 +1,9 @@
 import { InstagramLogo } from "@phosphor-icons/react/dist/ssr";
 import Foto from "@/components/Foto";
-import { depoimentos, equipe, torneios } from "@/lib/conteudo";
+import { equipe, torneios } from "@/lib/conteudo";
 import { site } from "@/lib/site";
 
-/* Torneios realizados, equipe e depoimentos. Fundo escuro para alternar
+/* Torneios realizados e equipe. Fundo escuro para alternar
    com as secoes claras vizinhas.
 
    Galeria: 8 fotos numa grade de 4 colunas a partir de md, com a
@@ -11,9 +11,7 @@ import { site } from "@/lib/site";
    (detalhe na grade abaixo). Mobile: 2 colunas.
 
    Equipe: retrato 4:5 com recorte retangular sobrio (raio de 8px, sem
-   circulo nem borda colorida).
-
-   Depoimentos: so renderiza com conteudo real em conteudo.ts. */
+   circulo nem borda colorida). */
 
 export default function Torneios() {
   return (
@@ -107,29 +105,6 @@ export default function Torneios() {
           </ul>
         </div>
 
-        {depoimentos.length > 0 && (
-          <div className="mt-20 border-t border-petroleo-700 pt-16 md:mt-28">
-            <h3 className="text-h2">O que dizem os clubes</h3>
-            <ul className="mt-10 grid gap-10 md:grid-cols-3">
-              {depoimentos.slice(0, 3).map((d) => (
-                <li key={d.nome}>
-                  <figure>
-                    <blockquote className="text-lead">
-                      <p>“{d.texto}”</p>
-                    </blockquote>
-                    <figcaption className="mt-4 text-small text-neutro-400">
-                      <span className="font-semibold text-creme-50">
-                        {d.nome}
-                      </span>
-                      <br />
-                      {d.clube}
-                    </figcaption>
-                  </figure>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
       </div>
     </section>
   );

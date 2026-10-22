@@ -45,6 +45,7 @@ npx vercel            # preview
 npx vercel --prod     # produção
 ```
 
-A página sai com `noindex` por padrão, para o preview não aparecer no
-Google. No deploy de produção, com o domínio definitivo, definir na Vercel
-`INDEXAR=1` e `NEXT_PUBLIC_SITE_URL` (ver `.env.example`).
+A página é indexada por padrão; só o preview da Vercel sai com `noindex`.
+A URL canônica usa `site.dominio` (`src/lib/site.ts`) ou
+`NEXT_PUBLIC_SITE_URL`; sem nenhum dos dois, usa o domínio de produção do
+projeto na Vercel (ver `.env.example`).

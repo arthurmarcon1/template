@@ -1,7 +1,8 @@
 import { faq } from "@/lib/conteudo";
 import Acordeao from "./Acordeao";
 
-/* FAQ. O acordeao e a unica parte com JavaScript (Acordeao.tsx). */
+/* FAQ. O acordeao e a unica parte com JavaScript (Acordeao.tsx).
+   Pergunta com resposta vazia em conteudo.ts nao renderiza. */
 
 export default function Faq() {
   return (
@@ -10,7 +11,7 @@ export default function Faq() {
         <h2 id="faq-titulo" className="text-h2 text-petroleo-700">
           {faq.titulo}
         </h2>
-        <Acordeao itens={faq.itens} />
+        <Acordeao itens={faq.itens.filter((i) => i.resposta.trim() !== "")} />
       </div>
     </section>
   );

@@ -3,11 +3,15 @@ import Footer from "@/components/layout/Footer";
 import WhatsappFlutuante from "@/components/layout/WhatsappFlutuante";
 import Hero from "@/components/sections/Hero";
 import Problema from "@/components/sections/Problema";
+import Numeros from "@/components/sections/Numeros";
 import ComoFunciona from "@/components/sections/ComoFunciona";
 import Servicos from "@/components/sections/Servicos";
+import Planos from "@/components/sections/Planos";
 import Diferenciais from "@/components/sections/Diferenciais";
 import Modalidades from "@/components/sections/Modalidades";
 import Torneios from "@/components/sections/Torneios";
+import Clubes from "@/components/sections/Clubes";
+import Depoimentos from "@/components/sections/Depoimentos";
 import Faq from "@/components/sections/Faq";
 import CtaFinal from "@/components/sections/CtaFinal";
 
@@ -23,11 +27,15 @@ export default function Page() {
       <main id="conteudo" tabIndex={-1} className="pt-(--header-h) outline-none">
         <Hero />
         <Problema />
+        <Numeros />
         <ComoFunciona />
         <Servicos />
+        <Planos />
         <Diferenciais />
         <Modalidades />
         <Torneios />
+        <Clubes />
+        <Depoimentos />
         <Faq />
         <CtaFinal />
       </main>

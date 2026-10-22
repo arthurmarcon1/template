@@ -1,13 +1,18 @@
 /* Textos da landing, secao por secao, na ordem do docs/LANDING_FM.md.
    Tudo marcado [CONFIRMAR] depende de dado real da F&M. Nada aqui foi
-   inventado: numeros, nomes e depoimentos so entram com dado real. */
+   inventado: numeros, nomes e depoimentos so entram com dado real.
+   Dados do briefing preenchido por Joao Maneck em 13/10/2026. */
+
+import { config } from "@/data/config";
 
 export const hero = {
   eyebrow: "Padel & Beach Tennis",
   titulo: "Seu clube, grandes torneios.",
   destaque: "Zero estresse.",
+  /* A F&M nao cuida de premiacao (briefing), entao o subtitulo fecha
+     nos resultados. */
   subtitulo:
-    "A F&M organiza o torneio inteiro, das inscrições à premiação. Seu clube só abre as quadras.",
+    "A F&M organiza o torneio inteiro, das inscrições aos resultados. Seu clube só abre as quadras.",
   ctaPrincipal: "Quero um torneio no meu clube",
   ctaSecundario: "Ver como funciona",
 };
@@ -38,8 +43,23 @@ export const problema = {
   fechamento: "Você ganha o evento. A gente assume o trabalho.",
 };
 
+/* Numeros confirmados no briefing. Nao acrescentar nenhum outro sem
+   dado real. */
+export const numeros = {
+  titulo: "A F&M em números",
+  itens: [
+    { valor: "+2.000", rotulo: "atletas atendidos" },
+    { valor: "10", rotulo: "clubes parceiros" },
+    { valor: "252", rotulo: "duplas no maior torneio" },
+    { valor: "Santa Maria", rotulo: "e região" },
+  ],
+};
+
 /* Os detalhes de cada etapa precisam ser validados com a F&M. */
-export const comoFunciona = {
+export const comoFunciona: {
+  titulo: string;
+  passos: { titulo: string; texto: string; detalhe?: string }[];
+} = {
   titulo: "Como funciona",
   passos: [
     {
@@ -54,17 +74,19 @@ export const comoFunciona = {
     },
     {
       titulo: "Dia do torneio",
-      texto: "Nossa equipe conduz a mesa, os jogos e a premiação.",
-      detalhe: "[CONFIRMAR: tamanho da equipe no dia]",
+      texto: "Acompanhamos o andamento dos jogos e mantemos o cronograma em dia.",
+      detalhe: "[CONFIRMAR: no plano presencial, quem opera a mesa no dia?]",
     },
     {
       titulo: "Pós-evento",
-      texto: "Resultados publicados e fotos para o seu clube divulgar.",
-      detalhe: "[CONFIRMAR: prazo de entrega das fotos]",
+      texto:
+        "Resultados publicados e chaveamento final disponível para o clube divulgar.",
     },
   ],
 };
 
+/* Escopo conforme o briefing: premiacao e cobertura (foto/video) sairam
+   porque a F&M nao presta esses servicos. */
 export const servicos = {
   titulo: "O que entregamos",
   itens: [
@@ -73,25 +95,70 @@ export const servicos = {
       texto: "Recebemos, confirmamos e organizamos todos os inscritos.",
     },
     {
-      titulo: "Chaveamento no Gripo",
+      titulo: "Atendimento aos atletas",
       texto:
-        "Chaves, horários e resultados online, em tempo real, para atletas e público.",
+        "Respondemos dúvidas sobre data, horário, valor e pagamento. O clube não precisa atender ninguém.",
     },
-    { titulo: "Mesa e arbitragem", texto: "[CONFIRMAR: escopo]" },
+    {
+      titulo: "Chaveamento no Grippo",
+      texto:
+        "Chaveamento no Grippo ou MatchZoom. Chaves, horários e resultados online, em tempo real, para atletas e público.",
+    },
+    {
+      titulo: "Mesa e arbitragem",
+      texto:
+        "[CONFIRMAR: o cliente respondeu \"mesa, tomada próxima e caixa de som\", o que parece ser o que o CLUBE fornece, não o que a F&M entrega]",
+    },
     {
       titulo: "Divulgação",
       texto: "Artes e posts prontos para o Instagram do clube.",
     },
     {
-      titulo: "Premiação",
-      texto: "[CONFIRMAR: troféus, medalhas, brindes]",
+      titulo: "Patrocínios",
+      texto:
+        "Expomos os patrocinadores do seu clube nas artes e na divulgação do torneio.",
+    },
+  ],
+};
+
+/* Planos. Os precos so aparecem com config.exibirPrecos ligado; com ele
+   desligado, o card mostra precoOculto. */
+export const planos = {
+  titulo: "Dois jeitos de rodar o seu torneio.",
+  precoOculto: "Sob orçamento",
+  itens: [
+    {
+      selo: "Remota",
+      nome: "Organização remota",
+      preco: "R$ 1.000",
+      resumo:
+        "A gente monta e gerencia o torneio inteiro à distância. Você responde um formulário com o modelo do torneio e recebe tudo pronto.",
+      incluiTitulo: "Inclui",
+      inclui: [
+        "Montagem completa no Grippo ou MatchZoom",
+        "Categorias, chaves e cronograma",
+        "Link de pagamento das inscrições",
+        "Atendimento aos atletas durante as inscrições",
+        "Resultados publicados em tempo real",
+      ],
+      clube: "Quadras e a equipe do dia.",
     },
     {
-      titulo: "Patrocínios",
-      texto: "[CONFIRMAR: se a F&M capta ou só expõe patrocinadores]",
+      selo: "Presencial",
+      nome: "Organização presencial",
+      preco: "R$ 2.000 + custos de deslocamento",
+      resumo:
+        "Tudo da organização remota, mais a nossa presença no dia do torneio.",
+      incluiTitulo: "Inclui tudo do plano remoto, mais",
+      inclui: [
+        "Equipe da F&M no local durante o torneio",
+        "Acompanhamento do cronograma ao vivo",
+      ],
+      clube:
+        "Quadras, espaço reservado para a organização, água e alimentação, hospedagem e deslocamento da equipe.",
     },
-    { titulo: "Cobertura", texto: "[CONFIRMAR: foto e vídeo]" },
   ],
+  nota: "Os custos de deslocamento variam conforme a distância e são definidos no orçamento.",
 };
 
 export const diferenciais = {
@@ -100,12 +167,12 @@ export const diferenciais = {
     {
       titulo: "Organização",
       texto:
-        "Seu clube não precisa destacar ninguém da equipe. A F&M chega com processo pronto e cumpre o cronograma.",
+        "Seu clube não precisa responder a cada atleta. A F&M chega com processo pronto e cumpre o cronograma.",
     },
     {
       titulo: "Competição",
       texto:
-        "Categorias bem montadas, jogos equilibrados e chaveamento transparente no Gripo.",
+        "Categorias bem montadas, jogos equilibrados e chaveamento transparente no Grippo.",
     },
     {
       titulo: "Experiência",
@@ -113,17 +180,6 @@ export const diferenciais = {
         "Atleta bem recebido, evento com cara profissional e divulgação que valoriza o seu clube.",
     },
   ],
-
-  /* Faixa de numeros. So aparece com exibir: true E todos os valores
-     preenchidos. Enquanto os numeros reais nao chegarem, fica oculta. */
-  numeros: {
-    exibir: false,
-    itens: [
-      { valor: "", rotulo: "torneios realizados" }, // [CONFIRMAR: torneios realizados]
-      { valor: "", rotulo: "atletas" }, // [CONFIRMAR: atletas]
-      { valor: "", rotulo: "clubes parceiros" }, // [CONFIRMAR: clubes parceiros]
-    ],
-  },
 };
 
 export const modalidades = {
@@ -169,13 +225,15 @@ export const equipe = {
   titulo: "Quem organiza",
   pessoas: [
     {
-      nome: "Eduardo Friedrich [CONFIRMAR nome completo]",
+      /* O briefing diz "Eduardo Ivan"; a versao anterior da pagina dizia
+         "Eduardo Friedrich". */
+      nome: "Eduardo [CONFIRMAR nome completo: Ivan ou Friedrich?]",
       linha: "[CONFIRMAR: uma linha sobre o Eduardo]",
       instagram: { handle: "@edufriedrich_", url: "https://instagram.com/edufriedrich_" },
-      foto: { src: "/fotos/eduardo.webp", alt: "Retrato de Eduardo Friedrich, da F&M" },
+      foto: { src: "/fotos/eduardo.webp", alt: "Retrato de Eduardo, da F&M" },
     },
     {
-      nome: "João Maneck",
+      nome: "João Eduardo Moraes Maneck",
       linha: "[CONFIRMAR: uma linha sobre o João]",
       instagram: { handle: "@joao.maneck", url: "https://instagram.com/joao.maneck" },
       foto: { src: "/fotos/joao.webp", alt: "Retrato de João Maneck, da F&M" },
@@ -183,21 +241,55 @@ export const equipe = {
   ],
 };
 
-/* Depoimentos de clubes: ate 3. A secao fica oculta enquanto a lista
-   estiver vazia. So entram depoimentos reais, com autorizacao. Formato:
-   { texto: "...", nome: "Nome da pessoa", clube: "Clube, cidade" } */
-export const depoimentos: { texto: string; nome: string; clube: string }[] = [];
+export const clubesAtendidos = {
+  titulo: "Clubes que já receberam torneios da F&M",
+};
 
+export const depoimentosSecao = {
+  titulo: "O que dizem os clubes.",
+};
+
+/* Resposta vazia: a pergunta nao renderiza (Faq.tsx). */
 export const faq = {
   titulo: "Perguntas frequentes",
   itens: [
-    { pergunta: "Quanto custa? Como é cobrado?", resposta: "[CONFIRMAR: modelo de cobrança e faixa de valores]" },
-    { pergunta: "Com quanto tempo de antecedência preciso marcar?", resposta: "[CONFIRMAR: antecedência mínima]" },
-    { pergunta: "Quantas quadras preciso ter?", resposta: "[CONFIRMAR: número mínimo de quadras]" },
-    { pergunta: "Vocês atendem quais cidades?", resposta: "[CONFIRMAR: cidades e região de atuação]" },
-    { pergunta: "O clube precisa fornecer algo além das quadras?", resposta: "[CONFIRMAR: o que fica por conta do clube]" },
-    { pergunta: "Como funciona o chaveamento no Gripo?", resposta: "[CONFIRMAR: como atletas e público acompanham chaves e resultados]" },
-    { pergunta: "Dá para fazer torneio só de Padel, só de Beach Tennis ou misto?", resposta: "[CONFIRMAR: formatos possíveis]" },
+    {
+      pergunta: "Quanto custa? Como é cobrado?",
+      resposta: config.exibirPrecos
+        ? "Trabalhamos com dois formatos. A organização remota custa R$ 1.000 e cobre a montagem e a gestão completa do torneio à distância. A organização presencial custa R$ 2.000 mais os custos de deslocamento, e inclui a nossa equipe no local no dia do evento."
+        : "Trabalhamos com dois formatos, remoto e presencial. O valor depende do formato escolhido e da distância. Chame no WhatsApp que passamos o orçamento.",
+    },
+    {
+      pergunta: "Com quanto tempo de antecedência preciso marcar?",
+      resposta:
+        "Não existe prazo fixo. O importante é falar com a gente antes de abrir as inscrições do seu torneio, para montarmos tudo desde o começo.",
+    },
+    {
+      pergunta: "Quantas quadras preciso ter?",
+      resposta:
+        "Depende do número de duplas inscritas. A gente calcula isso junto com você quando define o formato do torneio.",
+    },
+    {
+      pergunta: "Vocês atendem quais cidades?",
+      resposta:
+        "Somos de Santa Maria e atendemos a região. Para outras cidades, falamos sobre deslocamento e combinamos no orçamento.",
+    },
+    {
+      pergunta: "O clube precisa fornecer algo além das quadras?",
+      resposta:
+        "Na organização remota, só as quadras e a equipe do dia. Na presencial, também um espaço reservado para a organização, água e alimentação, além de hospedagem e deslocamento da nossa equipe.",
+    },
+    {
+      /* [CONFIRMAR] Ficou em branco no briefing. Oculta ate o cliente
+         responder. */
+      pergunta: "Como funciona o chaveamento no Grippo?",
+      resposta: "",
+    },
+    {
+      pergunta: "Dá para fazer só Padel, só Beach Tennis ou misto?",
+      resposta:
+        "Dá para fazer das três formas. Se quiser rodar as duas modalidades no mesmo evento, a gente monta o cronograma para isso.",
+    },
   ],
 };
 

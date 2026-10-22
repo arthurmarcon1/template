@@ -61,7 +61,7 @@ export default function Footer() {
       <div className="border-t border-petroleo-700">
         <div className="container-content flex flex-col gap-2 py-6 text-small text-neutro-400 sm:flex-row sm:justify-between">
           <p>
-            © {new Date().getFullYear()} {site.nome}
+            © {new Date().getFullYear()} {site.nome} · {site.empresa}
           </p>
           <p>Site por 3eTec</p>
         </div>
