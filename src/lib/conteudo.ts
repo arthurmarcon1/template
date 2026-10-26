@@ -85,6 +85,14 @@ export const comoFunciona: {
   ],
 };
 
+/* Faixa de foto entre "Como funciona" e "O que entregamos". A frase e
+   a sugerida no briefing para o posicionamento. Foto de banco de imagem
+   (Unsplash, Ashford Marx), so ambientacao. */
+export const faixaFoto = {
+  frase: "Seu clube abre as quadras. O resto é com a gente.",
+  foto: "/fotos/fundo-quadra.webp",
+};
+
 /* Escopo conforme o briefing: premiacao e cobertura (foto/video) sairam
    porque a F&M nao presta esses servicos. */
 export const servicos = {
@@ -191,7 +199,7 @@ export const modalidades = {
       categorias: "[CONFIRMAR: categorias oferecidas no Padel]",
       foto: {
         src: "/fotos/padel.webp",
-        alt: "Dupla disputando um ponto em torneio de Padel organizado pela F&M",
+        alt: "Duas raquetes de Padel e várias bolas sobre a quadra azul",
       },
     },
     {
@@ -200,7 +208,7 @@ export const modalidades = {
       categorias: "[CONFIRMAR: categorias oferecidas no Beach Tennis]",
       foto: {
         src: "/fotos/beach-tennis.webp",
-        alt: "Atletas em jogo de Beach Tennis durante torneio organizado pela F&M",
+        alt: "Atletas disputando um ponto de Beach Tennis na areia, junto à rede",
       },
     },
   ],
@@ -230,13 +238,13 @@ export const equipe = {
       nome: "Eduardo [CONFIRMAR nome completo: Ivan ou Friedrich?]",
       linha: "[CONFIRMAR: uma linha sobre o Eduardo]",
       instagram: { handle: "@edufriedrich_", url: "https://instagram.com/edufriedrich_" },
-      foto: { src: "/fotos/eduardo.webp", alt: "Retrato de Eduardo, da F&M" },
+      foto: { src: "/fotos/eduardo.webp", alt: "Eduardo, da F&M, com uma raquete de Padel na quadra" },
     },
     {
       nome: "João Eduardo Moraes Maneck",
       linha: "[CONFIRMAR: uma linha sobre o João]",
       instagram: { handle: "@joao.maneck", url: "https://instagram.com/joao.maneck" },
-      foto: { src: "/fotos/joao.webp", alt: "Retrato de João Maneck, da F&M" },
+      foto: { src: "/fotos/joao.webp", alt: "João Maneck, da F&M, em quadra de Padel" },
     },
   ],
 };
@@ -296,4 +304,6 @@ export const faq = {
 export const ctaFinal = {
   titulo: "Bora colocar o seu clube no calendário?",
   botao: "Quero um torneio no meu clube",
+  /* Bola com a marca F&M na quadra verde. */
+  foto: "/fotos/bola-fm.webp",
 };

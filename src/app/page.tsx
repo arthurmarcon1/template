@@ -7,6 +7,7 @@ import Hero from "@/components/sections/Hero";
 import Problema from "@/components/sections/Problema";
 import Numeros from "@/components/sections/Numeros";
 import ComoFunciona from "@/components/sections/ComoFunciona";
+import FaixaFoto from "@/components/sections/FaixaFoto";
 import Servicos from "@/components/sections/Servicos";
 import Planos from "@/components/sections/Planos";
 import Diferenciais from "@/components/sections/Diferenciais";
@@ -31,6 +32,7 @@ export default function Page() {
         <Problema />
         <Numeros />
         <ComoFunciona />
+        <FaixaFoto />
         <Servicos />
         <Planos />
         <Diferenciais />

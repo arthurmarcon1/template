@@ -36,12 +36,12 @@ Colocar em `public/fotos/`, em WebP. Cada foto entra sozinha no site no próximo
 
 | Arquivo | Onde aparece | Proporção |
 |---|---|---|
-| `padel.webp` | Modalidades | 4:3 horizontal |
-| `beach-tennis.webp` | Modalidades | 4:3 horizontal |
+| ~~`padel.webp`~~ (recebida) | Modalidades | 4:3 horizontal |
+| ~~`beach-tennis.webp`~~ (recebida) | Modalidades | 4:3 horizontal |
 | `torneio-01.webp` | Galeria (destaque) | 1:1 |
 | `torneio-02.webp` a `torneio-07.webp` | Galeria | 1:1 |
 | `torneio-08.webp` | Galeria (faixa larga) | 2:1 horizontal |
-| `eduardo.webp`, `joao.webp` | Quem organiza | 4:5 vertical |
+| ~~`eduardo.webp`, `joao.webp`~~ (recebidas) | Quem organiza | 4:5 vertical |
 
 ---
 

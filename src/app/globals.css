@@ -495,21 +495,6 @@
   }
 }
 
-/* ---- Bola quicando no CTA final ---------------------------------------- */
-@media (prefers-reduced-motion: no-preference) {
-  .bola-quicando {
-    animation: bola-quicando 1.6s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    transform-origin: 50% 100%;
-  }
-}
-
-@keyframes bola-quicando {
-  0%, 100% { transform: translateY(0) scale(1.06, 0.94); }
-  12% { transform: translateY(-4%) scale(0.97, 1.03); }
-  50% { transform: translateY(-14%) scale(1); }
-  88% { transform: translateY(-4%) scale(0.97, 1.03); }
-}
-
 /* ---- Revelar ao rolar --------------------------------------------------- */
 /* Animacoes ligadas a rolagem (animation-timeline: view()), sem JS. Sem
    suporte no navegador, o conteudo ja esta no lugar. */
@@ -574,4 +559,23 @@
 
 @keyframes linha-x {
   from { transform: scaleX(0); }
+}
+
+/* ---- Parallax da faixa de foto (FaixaFoto.tsx) -------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .parallax {
+      animation: parallax linear both;
+      animation-timeline: view();
+    }
+  }
+}
+
+@keyframes parallax {
+  from {
+    transform: scale(1.15) translateY(-6%);
+  }
+  to {
+    transform: scale(1.15) translateY(6%);
+  }
 }
