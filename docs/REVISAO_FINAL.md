@@ -16,7 +16,7 @@ Briefing preenchido por João Maneck em 13/10/2026 (ver `fm-ajustes-briefing.md`
 
 ### Confirmar com a F&M
 - [ ] **WhatsApp (55) 98170-0001**: foi escrito como "5598170-0001" e termina em 0001. Testar o link num celular real.
-- [ ] **Nome completo do Eduardo**: o briefing diz "Eduardo Ivan", a versão anterior da página dizia "Eduardo Friedrich".
+- [x] **Nome do Eduardo**: confirmado como Eduardo Friedrich.
 - [ ] **Preços públicos**: autorização para publicar R$ 1.000 e R$ 2.000. Hoje `exibirPrecos` está desligado em `src/data/config.ts` (planos mostram "Sob orçamento").
 - [ ] **Mesa e arbitragem**: "mesa, tomada próxima e caixa de som" é o que a F&M leva ou o que o clube precisa ter?
 - [ ] **Plano presencial**: quem opera a mesa no dia, a F&M ou a equipe do clube?

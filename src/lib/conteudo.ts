@@ -233,12 +233,10 @@ export const equipe = {
   titulo: "Quem organiza",
   pessoas: [
     {
-      /* O briefing diz "Eduardo Ivan"; a versao anterior da pagina dizia
-         "Eduardo Friedrich". */
-      nome: "Eduardo [CONFIRMAR nome completo: Ivan ou Friedrich?]",
+      nome: "Eduardo Friedrich",
       linha: "[CONFIRMAR: uma linha sobre o Eduardo]",
       instagram: { handle: "@edufriedrich_", url: "https://instagram.com/edufriedrich_" },
-      foto: { src: "/fotos/eduardo.webp", alt: "Eduardo, da F&M, com uma raquete de Padel na quadra" },
+      foto: { src: "/fotos/eduardo.webp", alt: "Eduardo Friedrich, da F&M, com uma raquete de Padel na quadra" },
     },
     {
       nome: "João Eduardo Moraes Maneck",
