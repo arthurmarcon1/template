@@ -15,4 +15,6 @@ export const clubes: Clube[] = [
   { nome: "8000 Esportes Beach" },
   { nome: "SH House" },
   { nome: "Elite Padel Club" },
+  { nome: "Copa Cesla" },
+  { nome: "Circuito Santa-Mariense de Beach Tennis" },
 ];

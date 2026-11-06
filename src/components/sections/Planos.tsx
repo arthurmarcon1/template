@@ -5,12 +5,13 @@ import { planos } from "@/lib/conteudo";
 /* Planos: remoto e presencial, lado a lado a partir de md, empilhados no
    mobile. Os dois com o mesmo peso visual (nenhum "recomendado"). Borda
    bege-200, raio de 8px, sem sombra nem gradiente. O preco so aparece
-   com config.exibirPrecos ligado (src/data/config.ts). */
+   se o plano for precoPublico ou com config.exibirPrecos ligado
+   (src/data/config.ts). */
 
-function Preco({ valor }: { valor: string }) {
+function Preco({ valor, publico }: { valor: string; publico: boolean }) {
   return (
     <p className="mt-4 font-display text-[clamp(2rem,4vw,2.75rem)] leading-none font-extrabold text-petroleo-900">
-      {config.exibirPrecos ? valor : planos.precoOculto}
+      {publico || config.exibirPrecos ? valor : planos.precoOculto}
     </p>
   );
 }
@@ -33,7 +34,7 @@ export default function Planos() {
                 {p.selo}
               </p>
               <h3 className="mt-5 text-h3 text-petroleo-900">{p.nome}</h3>
-              <Preco valor={p.preco} />
+              <Preco valor={p.preco} publico={p.precoPublico} />
               <p className="mt-5 max-w-[46ch]">{p.resumo}</p>
 
               <div className="mt-8 flex-1">

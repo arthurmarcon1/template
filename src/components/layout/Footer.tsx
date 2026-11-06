@@ -1,5 +1,9 @@
 import Image from "next/image";
-import { InstagramLogo, WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
+import {
+  EnvelopeSimple,
+  InstagramLogo,
+  WhatsappLogo,
+} from "@phosphor-icons/react/dist/ssr";
 import { site, whatsappUrl } from "@/lib/site";
 
 /* Footer em petroleo-900: logo, assinatura, contatos e credito.
@@ -50,6 +54,18 @@ export default function Footer() {
                 <span>
                   <span className="sr-only">Instagram: </span>
                   {site.instagram.handle}
+                </span>
+              </a>
+            </li>
+            <li>
+              <a
+                href={`mailto:${site.email}`}
+                className="inline-flex items-center gap-3"
+              >
+                <EnvelopeSimple size={22} aria-hidden />
+                <span>
+                  <span className="sr-only">E-mail: </span>
+                  {site.email}
                 </span>
               </a>
             </li>

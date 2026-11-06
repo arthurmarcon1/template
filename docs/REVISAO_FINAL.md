@@ -8,7 +8,7 @@ Briefing preenchido por João Maneck em 13/10/2026 (ver `fm-ajustes-briefing.md`
 
 ### Bloqueia a publicação
 - [ ] **Depoimentos de clubes**: de 1 a 3, com texto, nome, cargo, clube e **autorização para publicar**. Entram em `src/data/depoimentos.ts`; com a lista vazia, a seção fica oculta.
-- [ ] **Resposta: "Como funciona o chaveamento no Grippo?"**: ficou em branco. Enquanto a resposta em `conteudo.ts` estiver vazia, a pergunta não aparece no FAQ.
+- [ ] **Resposta: "Como funciona o chaveamento no Gripo?"**: ficou em branco. Enquanto a resposta em `conteudo.ts` estiver vazia, a pergunta não aparece no FAQ.
 - [ ] **Fotos**: ver a lista abaixo.
 - [ ] **Logo vetorial (SVG ou PDF)**: hoje o site usa um PNG de 235×235. Também a versão só com o traço (`logo-estampa.png`) e o favicon.
 - [ ] **CNPJ e razão social**: aparecem no rodapé (`site.empresa`).
@@ -17,13 +17,9 @@ Briefing preenchido por João Maneck em 13/10/2026 (ver `fm-ajustes-briefing.md`
 ### Confirmar com a F&M
 - [ ] **WhatsApp (55) 98170-0001**: foi escrito como "5598170-0001" e termina em 0001. Testar o link num celular real.
 - [x] **Nome do Eduardo**: confirmado como Eduardo Friedrich.
-- [ ] **Preços públicos**: autorização para publicar R$ 1.000 e R$ 2.000. Hoje `exibirPrecos` está desligado em `src/data/config.ts` (planos mostram "Sob orçamento").
-- [ ] **Mesa e arbitragem**: "mesa, tomada próxima e caixa de som" é o que a F&M leva ou o que o clube precisa ter?
-- [ ] **Plano presencial**: quem opera a mesa no dia, a F&M ou a equipe do clube?
-- [ ] **Divulgação / artes para o Instagram**: está na página como entrega, mas não foi confirmado no briefing.
 - [ ] **Antecedência mínima**: o FAQ diz "antes de abrir as inscrições". Confirmar.
-- [ ] Como funciona, passos 1 e 2: canal da conversa e o que o clube aprova antes de abrir as inscrições.
-- [ ] Categorias oferecidas no Padel e no Beach Tennis, e as frases das duas modalidades.
+- [ ] Preço do plano presencial: o remoto (R$ 990) está público; para mostrar o presencial, ligar `exibirPrecos` em `src/data/config.ts`.
+- [ ] Frases das duas modalidades.
 - [ ] Uma linha sobre o Eduardo e uma sobre o João.
 - [ ] Legenda (torneio, clube e data) e descrição da cena de cada foto da galeria.
 

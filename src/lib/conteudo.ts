@@ -55,27 +55,20 @@ export const numeros = {
   ],
 };
 
-/* Os detalhes de cada etapa precisam ser validados com a F&M. */
-export const comoFunciona: {
-  titulo: string;
-  passos: { titulo: string; texto: string; detalhe?: string }[];
-} = {
+export const comoFunciona = {
   titulo: "Como funciona",
   passos: [
     {
       titulo: "Conversa",
       texto: "Você diz a data, as quadras disponíveis e as modalidades.",
-      detalhe: "[CONFIRMAR: com quanto tempo de antecedência e por qual canal]",
     },
     {
       titulo: "Planejamento",
       texto: "Montamos categorias, formato, cronograma e a divulgação.",
-      detalhe: "[CONFIRMAR: o que o clube aprova antes de abrir as inscrições]",
     },
     {
       titulo: "Dia do torneio",
       texto: "Acompanhamos o andamento dos jogos e mantemos o cronograma em dia.",
-      detalhe: "[CONFIRMAR: no plano presencial, quem opera a mesa no dia?]",
     },
     {
       titulo: "Pós-evento",
@@ -108,18 +101,18 @@ export const servicos = {
         "Respondemos dúvidas sobre data, horário, valor e pagamento. O clube não precisa atender ninguém.",
     },
     {
-      titulo: "Chaveamento no Grippo",
+      titulo: "Chaveamento no Gripo",
       texto:
-        "Chaveamento no Grippo ou MatchZoom. Chaves, horários e resultados online, em tempo real, para atletas e público.",
+        "Chaveamento no Gripo ou MatchZoom. Chaves, horários e resultados online, em tempo real, para atletas e público.",
     },
     {
       titulo: "Mesa e arbitragem",
       texto:
-        "[CONFIRMAR: o cliente respondeu \"mesa, tomada próxima e caixa de som\", o que parece ser o que o CLUBE fornece, não o que a F&M entrega]",
+        "Disponível no modelo presencial. O clube disponibiliza o espaço e a aparelhagem, conforme combinado com a F&M.",
     },
     {
       titulo: "Divulgação",
-      texto: "Artes e posts prontos para o Instagram do clube.",
+      texto: "A F&M ajuda na divulgação do torneio pelo próprio Instagram.",
     },
     {
       titulo: "Patrocínios",
@@ -129,8 +122,8 @@ export const servicos = {
   ],
 };
 
-/* Planos. Os precos so aparecem com config.exibirPrecos ligado; com ele
-   desligado, o card mostra precoOculto. */
+/* Planos. precoPublico: o valor sempre aparece. Nos demais, so com
+   config.exibirPrecos ligado; desligado, o card mostra precoOculto. */
 export const planos = {
   titulo: "Dois jeitos de rodar o seu torneio.",
   precoOculto: "Sob orçamento",
@@ -138,12 +131,13 @@ export const planos = {
     {
       selo: "Remota",
       nome: "Organização remota",
-      preco: "R$ 1.000",
+      preco: "R$ 990",
+      precoPublico: true,
       resumo:
         "A gente monta e gerencia o torneio inteiro à distância. Você responde um formulário com o modelo do torneio e recebe tudo pronto.",
       incluiTitulo: "Inclui",
       inclui: [
-        "Montagem completa no Grippo ou MatchZoom",
+        "Montagem completa no Gripo ou MatchZoom",
         "Categorias, chaves e cronograma",
         "Link de pagamento das inscrições",
         "Atendimento aos atletas durante as inscrições",
@@ -155,6 +149,7 @@ export const planos = {
       selo: "Presencial",
       nome: "Organização presencial",
       preco: "R$ 2.000 + custos de deslocamento",
+      precoPublico: false,
       resumo:
         "Tudo da organização remota, mais a nossa presença no dia do torneio.",
       incluiTitulo: "Inclui tudo do plano remoto, mais",
@@ -180,7 +175,7 @@ export const diferenciais = {
     {
       titulo: "Competição",
       texto:
-        "Categorias bem montadas, jogos equilibrados e chaveamento transparente no Grippo.",
+        "Categorias bem montadas, jogos equilibrados e chaveamento transparente no Gripo ou MatchZoom.",
     },
     {
       titulo: "Experiência",
@@ -196,7 +191,7 @@ export const modalidades = {
     {
       nome: "Padel",
       frase: "Torneios de duplas na quadra do seu clube, com categorias por nível.",
-      categorias: "[CONFIRMAR: categorias oferecidas no Padel]",
+      categorias: "Naipes (1ª, 2ª, 3ª, 4ª, 5ª etc.), Sênior (35+, 45+, 60+ etc.) e Júnior (Sub 10, Sub 12, Sub 14 etc.)",
       foto: {
         src: "/fotos/padel.webp",
         alt: "Duas raquetes de Padel e várias bolas sobre a quadra azul",
@@ -205,7 +200,7 @@ export const modalidades = {
     {
       nome: "Beach Tennis",
       frase: "Torneios de duplas na areia do seu clube, com categorias por nível.",
-      categorias: "[CONFIRMAR: categorias oferecidas no Beach Tennis]",
+      categorias: "Naipes (1ª, 2ª, 3ª, 4ª, 5ª etc.), Sênior (35+, 45+, 60+ etc.) e Júnior (Sub 10, Sub 12, Sub 14 etc.)",
       foto: {
         src: "/fotos/beach-tennis.webp",
         alt: "Atletas disputando um ponto de Beach Tennis na areia, junto à rede",
@@ -216,6 +211,60 @@ export const modalidades = {
 
 export const torneios = {
   titulo: "Torneios realizados",
+  destaque: {
+    titulo: "Circuito Santa-Mariense de Beach Tennis",
+    texto:
+      "A F&M fez todo o acompanhamento do circuito, o maior do centro do RS e o maior do interior do estado.",
+    foto: {
+      src: "/fotos/circuito-beach-sm.webp",
+      alt: "Vista do alto das quadras de areia do Circuito Santa-Mariense de Beach Tennis, com atletas em jogo e bandeiras dos patrocinadores",
+    },
+  },
+  /* Os dois videos com som, inteiros. */
+  eliteClub: {
+    titulo: "Acompanhamento e dicas para o torneio",
+    texto: "Conteúdos da F&M gravados no Elite Padel Club.",
+    videos: [
+      {
+        src: "/videos/elite-clube-1.mp4",
+        poster: "/videos/elite-clube-1.webp",
+        rotulo: "João e Eduardo, da F&M, na quadra do Elite Padel Club, falando sobre o jogo na rede",
+      },
+      {
+        src: "/videos/elite-clube-2.mp4",
+        poster: "/videos/elite-clube-2.webp",
+        rotulo: "Eduardo e João, da F&M, na quadra do Elite Padel Club, falando sobre posicionamento",
+      },
+    ],
+  },
+  /* Takes curtos e sem som dos videos longos. Originais fora do
+     repositorio; recortes em public/videos/ (540x960, H.264). */
+  eliteCup: [
+    {
+      titulo: "Elite Cup: sexta",
+      takes: [
+        { id: "elite-sexta-1", rotulo: "Dupla se abraça na quadra depois do jogo" },
+        { id: "elite-sexta-2", rotulo: "Atleta se prepara para receber o saque" },
+        { id: "elite-sexta-3", rotulo: "Público acompanha os jogos da arquibancada" },
+      ],
+    },
+    {
+      titulo: "Elite Cup: sábado",
+      takes: [
+        { id: "elite-sabado-1", rotulo: "Atletas posam juntos na rede" },
+        { id: "elite-sabado-2", rotulo: "Atleta em jogo na quadra azul" },
+        { id: "elite-sabado-3", rotulo: "Atletas se cumprimentam na rede" },
+      ],
+    },
+    {
+      titulo: "Elite Cup: melhores momentos",
+      takes: [
+        { id: "elite-final-1", rotulo: "Dupla comemora na quadra com o público ao fundo" },
+        { id: "elite-final-2", rotulo: "Atleta corre para a rede durante o ponto" },
+        { id: "elite-final-3", rotulo: "Atletas comemoram com o troféu na premiação" },
+      ],
+    },
+  ],
   /* Legenda: nome do torneio, clube e data. Trocar cada [CONFIRMAR] pelo
      dado real ao colocar a foto correspondente em public/fotos/. */
   galeria: Array.from({ length: 8 }, (_, i) => {
@@ -262,8 +311,8 @@ export const faq = {
     {
       pergunta: "Quanto custa? Como é cobrado?",
       resposta: config.exibirPrecos
-        ? "Trabalhamos com dois formatos. A organização remota custa R$ 1.000 e cobre a montagem e a gestão completa do torneio à distância. A organização presencial custa R$ 2.000 mais os custos de deslocamento, e inclui a nossa equipe no local no dia do evento."
-        : "Trabalhamos com dois formatos, remoto e presencial. O valor depende do formato escolhido e da distância. Chame no WhatsApp que passamos o orçamento.",
+        ? "Trabalhamos com dois formatos. A organização remota custa R$ 990 e cobre a montagem e a gestão completa do torneio à distância. A organização presencial custa R$ 2.000 mais os custos de deslocamento, e inclui a nossa equipe no local no dia do evento."
+        : "Trabalhamos com dois formatos. A organização remota custa R$ 990 e cobre a montagem e a gestão completa do torneio à distância. Na presencial, com a nossa equipe no local, o valor depende da distância: chame no WhatsApp que passamos o orçamento.",
     },
     {
       pergunta: "Com quanto tempo de antecedência preciso marcar?",
@@ -278,7 +327,7 @@ export const faq = {
     {
       pergunta: "Vocês atendem quais cidades?",
       resposta:
-        "Somos de Santa Maria e atendemos a região. Para outras cidades, falamos sobre deslocamento e combinamos no orçamento.",
+        "Somos de Santa Maria e atendemos a região presencialmente. Para outras cidades, falamos sobre deslocamento e combinamos no orçamento. No formato remoto, atendemos o Brasil inteiro.",
     },
     {
       pergunta: "O clube precisa fornecer algo além das quadras?",
@@ -288,7 +337,7 @@ export const faq = {
     {
       /* [CONFIRMAR] Ficou em branco no briefing. Oculta ate o cliente
          responder. */
-      pergunta: "Como funciona o chaveamento no Grippo?",
+      pergunta: "Como funciona o chaveamento no Gripo?",
       resposta: "",
     },
     {

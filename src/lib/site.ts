@@ -10,6 +10,8 @@ export const site = {
   frase: "Seu clube, grandes torneios. Zero estresse.",
   modalidades: ["Padel", "Beach Tennis"],
 
+  email: "fm.eventosesportvos@gmail.com",
+
   instagram: {
     handle: "@fmeventosesportivos",
     url: "https://instagram.com/fmeventosesportivos",

@@ -103,6 +103,7 @@ function JsonLd() {
     description: DESCRICAO,
     url: baseUrl,
     telephone: `+${site.whatsapp.digitos}`,
+    email: site.email,
     logo: `${baseUrl}${site.logo.src}`,
     image: `${baseUrl}${site.logo.src}`,
     slogan: site.assinatura.join(" · "),
