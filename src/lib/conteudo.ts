@@ -265,16 +265,6 @@ export const torneios = {
       ],
     },
   ],
-  /* Legenda: nome do torneio, clube e data. Trocar cada [CONFIRMAR] pelo
-     dado real ao colocar a foto correspondente em public/fotos/. */
-  galeria: Array.from({ length: 8 }, (_, i) => {
-    const n = String(i + 1).padStart(2, "0");
-    return {
-      src: `/fotos/torneio-${n}.webp`,
-      alt: `Foto do torneio ${n} organizado pela F&M [CONFIRMAR: descrever a cena]`,
-      legenda: "[CONFIRMAR: nome do torneio, clube e data]",
-    };
-  }),
   instagram: "Ver mais no Instagram",
 };
 

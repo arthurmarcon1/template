@@ -9,7 +9,6 @@ Briefing preenchido por João Maneck em 13/10/2026 (ver `fm-ajustes-briefing.md`
 ### Bloqueia a publicação
 - [ ] **Depoimentos de clubes**: de 1 a 3, com texto, nome, cargo, clube e **autorização para publicar**. Entram em `src/data/depoimentos.ts`; com a lista vazia, a seção fica oculta.
 - [ ] **Resposta: "Como funciona o chaveamento no Gripo?"**: ficou em branco. Enquanto a resposta em `conteudo.ts` estiver vazia, a pergunta não aparece no FAQ.
-- [ ] **Fotos**: ver a lista abaixo.
 - [ ] **Logo vetorial (SVG ou PDF)**: hoje o site usa um PNG de 235×235. Também a versão só com o traço (`logo-estampa.png`) e o favicon.
 - [ ] **CNPJ e razão social**: aparecem no rodapé (`site.empresa`).
 - [ ] **Domínio**: registrar e preencher `site.dominio` (ou `NEXT_PUBLIC_SITE_URL`).
@@ -21,7 +20,6 @@ Briefing preenchido por João Maneck em 13/10/2026 (ver `fm-ajustes-briefing.md`
 - [ ] Preço do plano presencial: o remoto (R$ 990) está público; para mostrar o presencial, ligar `exibirPrecos` em `src/data/config.ts`.
 - [ ] Frases das duas modalidades.
 - [ ] Uma linha sobre o Eduardo e uma sobre o João.
-- [ ] Legenda (torneio, clube e data) e descrição da cena de cada foto da galeria.
 
 ### Decisão de posicionamento (opcional)
 - [ ] Testar o headline "Seu clube abre as quadras. O resto é com a gente." ou usar a frase como subtítulo. Hoje o hero segue com "Seu clube, grandes torneios. Zero estresse."
@@ -34,9 +32,6 @@ Colocar em `public/fotos/`, em WebP. Cada foto entra sozinha no site no próximo
 |---|---|---|
 | ~~`padel.webp`~~ (recebida) | Modalidades | 4:3 horizontal |
 | ~~`beach-tennis.webp`~~ (recebida) | Modalidades | 4:3 horizontal |
-| `torneio-01.webp` | Galeria (destaque) | 1:1 |
-| `torneio-02.webp` a `torneio-07.webp` | Galeria | 1:1 |
-| `torneio-08.webp` | Galeria (faixa larga) | 2:1 horizontal |
 | ~~`eduardo.webp`, `joao.webp`~~ (recebidas) | Quem organiza | 4:5 vertical |
 
 ---
