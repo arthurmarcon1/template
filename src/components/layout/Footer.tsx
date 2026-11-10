@@ -79,7 +79,17 @@ export default function Footer() {
           <p>
             © {new Date().getFullYear()} {site.nome} · {site.empresa}
           </p>
-          <p>Site por 3eTec</p>
+          <p>
+            Site por{" "}
+            <a
+              href="https://arthur-portfolio-lps.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-4 hover:text-creme-50"
+            >
+              3eTec
+            </a>
+          </p>
         </div>
       </div>
     </footer>

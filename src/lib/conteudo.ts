@@ -273,13 +273,15 @@ export const equipe = {
   pessoas: [
     {
       nome: "Eduardo Friedrich",
-      linha: "[CONFIRMAR: uma linha sobre o Eduardo]",
+      linha: 
+        "Graduado e mestre em Educação Física pela UFSM, ensina Padel e Beach Tennis, com certificação pela CBT e capacitações com Rodrigo Ovide, Pato Giménez e José Velozo, além de vivência profissional em Madri. Organiza o Circuito Santa-Mariense de Beach Tennis, há quatro anos o maior do interior do RS, além da Copa CESLA, do Circuito 0-40 e da Elite Cup. É Diretor Técnico da FUGE e sócio-fundador da F&M.",
       instagram: { handle: "@edufriedrich_", url: "https://instagram.com/edufriedrich_" },
       foto: { src: "/fotos/eduardo.webp", alt: "Eduardo Friedrich, da F&M, com uma raquete de Padel na quadra" },
     },
     {
       nome: "João Eduardo Moraes Maneck",
-      linha: "[CONFIRMAR: uma linha sobre o João]",
+      linha: 
+        "Com 23 anos, sou professor de Padel há mais de 5 anos, formado em Fisioterapia pela UFSM, com certificações Pato Giménez 1.0 e Gustavo Pratto Academy Nível 1. Também tenho experiência na organização de eventos esportivos, unindo conhecimento técnico, planejamento e paixão pelo esporte, para criar experiências de qualidade dentro e fora das quadras.",
       instagram: { handle: "@joao.maneck", url: "https://instagram.com/joao.maneck" },
       foto: { src: "/fotos/joao.webp", alt: "João Maneck, da F&M, em quadra de Padel" },
     },

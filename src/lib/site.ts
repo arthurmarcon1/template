@@ -43,8 +43,8 @@ export const site = {
   cidade: "Santa Maria",
   uf: "RS",
   regiao: "Santa Maria / RS",
-  /* [CONFIRMAR: CNPJ e razao social] Aparecem no rodape. */
-  empresa: "[CONFIRMAR: razão social] · CNPJ [CONFIRMAR]",
+  /* Aparece no rodape. Sem razao social, a pedido do cliente. */
+  empresa: "CNPJ 66.042.960/0001-22",
 
   /* [CONFIRMAR: dominio definitivo] Ainda nao registrado pelo cliente.
      Com https://, ex.: "https://dominio.com.br". Enquanto vazio, a URL
